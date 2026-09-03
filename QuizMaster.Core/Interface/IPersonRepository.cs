@@ -1,0 +1,17 @@
+﻿
+using QuizMaster.Core.Model;
+
+namespace QuizMaster.Core.Interface
+{
+    public interface IPersonRepository
+    {
+        Task<List<Person>> GetAllStudent(string role);
+        public Person GetPersonByPersonalNumber(string personalNumber, string role);
+        public Task<Person> GetPersonByUserName(string username, string role);
+        public  Task AddStudent(Person person);
+        public Task<string> UpdateStudent(Person student);
+        public Task DeleteStudent(string personalNumber);
+        //public  Task<Person> GetPersonByUserName<Person>(string username, string role);
+    }
+}
+
