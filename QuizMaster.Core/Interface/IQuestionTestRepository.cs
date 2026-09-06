@@ -6,23 +6,19 @@ namespace QuizMaster.Core.Interface
     public interface IQuestionTestRepository
     {
         //for student
-        Task<List<Person>> GetAllTestsCatalog(string role);
-        //for Lecturer
-        Task<List<Person>> GetAllQuestions(string role);
-
-        //for student
+        Task<List<TestCatalog>> GetAllTestsCatalog();
         Task<TestCatalog> GetTestCatalogById(int id);
-        //for student
-        Task<List<QuestionTest>> GetQuestionsByTestCatalogId(int testCatalogId);
+        Task<string> AddTestCatalog(TestCatalog testCatalog);
+        Task<string> UpdateTestCatalog(TestCatalog testCatalog);
+        Task<string> DeleteTestCatalog(TestCatalog testCatalog);
 
-        //for lecturer
-        Task<TestCatalog> AddTestCatalog(TestCatalog testCatalog);
+
+
+        //for Lecturer
+        Task<List<QuestionTest>> GetAllQuestions(string role);
         Task<QuestionTest> AddQuestionTest(QuestionTest questionTest);
-
-        Task<TestCatalog> UpdateTestCatalog(TestCatalog testCatalog);
+        Task<List<QuestionTest>> GetQuestionsByTestCatalogId(int testCatalogId);
         Task<QuestionTest> UpdateQuestionTest(QuestionTest questionTest);
-
-        Task<TestCatalog> DeleteTestCatalog(TestCatalog testCatalog);
         Task<QuestionTest> DeleteQuestionTest(QuestionTest questionTest);
     }
 }
