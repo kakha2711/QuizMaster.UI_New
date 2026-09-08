@@ -21,7 +21,8 @@ namespace QuizMaster.Infrastructure.Repositori
             {
                 TestCatalog? testCatalog = JsonSerializer.Deserialize<TestCatalog>(line);
 
-                testCatalogs.Add(testCatalog);
+                if(testCatalog != null && !testCatalog.IsDelete)
+                    testCatalogs.Add(testCatalog);
             }
 
             return Task.FromResult(testCatalogs);
@@ -136,23 +137,56 @@ namespace QuizMaster.Infrastructure.Repositori
 
 
 
-        public Task<List<QuestionTest>> GetAllQuestions(string role)
+        public Task<List<QuestionTest>> GetAllQuestions()
+        {
+           List<QuestionTest> questionTests = new List<QuestionTest>();
+
+            string[] testCatalogs = File.ReadAllLines(questionTestPath);
+
+            foreach (var item in testCatalogs)
+            {
+                QuestionTest? testCatalog = JsonSerializer.Deserialize<QuestionTest>(item);
+
+                if (testCatalog != null && !testCatalog.IsDelete)
+                {
+                    questionTests.Add(testCatalog);
+                }
+            }
+
+
+            return Task.FromResult(questionTests);
+        }
+
+
+        public async Task<List<QuestionTest>> GetQuestionsByTestCatalogId(int testCatalogId)
+        {
+            if (testCatalogId <= 0)
+                throw new ObjectEmptyException("Invalid question test ID");
+
+            List<QuestionTest> question = await GetAllQuestions();
+
+            List<QuestionTest> questionTest = new List<QuestionTest>();
+
+            foreach (var item in question)
+            {
+                if (item.TestCatalog.Id == testCatalogId)
+                {
+                    questionTest.Add(item);
+                }
+            }
+
+            return await Task.FromResult(questionTest);
+        }
+        public Task<string> AddQuestionTest(QuestionTest questionTest)
+        {
+
+            return Task.FromResult("Not implemented yet");
+        }
+        public Task<string> UpdateQuestionTest(QuestionTest questionTest)
         {
             throw new NotImplementedException();
         }
-        public Task<List<QuestionTest>> GetQuestionsByTestCatalogId(int testCatalogId)
-        {
-            throw new NotImplementedException();
-        }
-        public Task<QuestionTest> AddQuestionTest(QuestionTest questionTest)
-        {
-            throw new NotImplementedException();
-        }
-        public Task<QuestionTest> UpdateQuestionTest(QuestionTest questionTest)
-        {
-            throw new NotImplementedException();
-        }
-        public Task<QuestionTest> DeleteQuestionTest(QuestionTest questionTest)
+        public Task<string> DeleteQuestionTest(QuestionTest questionTest)
         {
             throw new NotImplementedException();
         }

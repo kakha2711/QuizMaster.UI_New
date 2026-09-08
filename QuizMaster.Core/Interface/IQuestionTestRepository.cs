@@ -15,10 +15,10 @@ namespace QuizMaster.Core.Interface
 
 
         //for Lecturer
-        Task<List<QuestionTest>> GetAllQuestions(string role);
-        Task<QuestionTest> AddQuestionTest(QuestionTest questionTest);
+        Task<List<QuestionTest>> GetAllQuestions();
         Task<List<QuestionTest>> GetQuestionsByTestCatalogId(int testCatalogId);
-        Task<QuestionTest> UpdateQuestionTest(QuestionTest questionTest);
-        Task<QuestionTest> DeleteQuestionTest(QuestionTest questionTest);
+        Task<string> AddQuestionTest(QuestionTest questionTest);
+        Task<string> UpdateQuestionTest(QuestionTest questionTest);
+        Task<string> DeleteQuestionTest(QuestionTest questionTest);
     }
 }
