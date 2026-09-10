@@ -179,16 +179,79 @@ namespace QuizMaster.Infrastructure.Repositori
         }
         public Task<string> AddQuestionTest(QuestionTest questionTest)
         {
+            string result;
 
-            return Task.FromResult("Not implemented yet");
+            if(questionTest == null)
+                throw new ObjectEmptyException("Question test is null");
+
+            var questionTests = GetAllQuestions().Result;
+
+            int oldCount = questionTests.Count;
+
+            int questionTestsId = questionTests.Count > 0 ? questionTests.Max(x => x.Id) + 1 : 1;
+
+            questionTest.Id = questionTestsId;
+
+            string serializedQuestionTest = JsonSerializer.Serialize(questionTest);
+
+            if (questionTests.Count == 0)
+                File.AppendAllText(questionTestPath, serializedQuestionTest);
+            else
+                File.AppendAllText(questionTestPath, Environment.NewLine + serializedQuestionTest);
+            
+            int newCount = GetAllQuestions().Result.Count;
+
+            result = newCount > oldCount ? "Question test added successfully" : "Failed to add question test";
+
+            return Task.FromResult(result);
         }
+
         public Task<string> UpdateQuestionTest(QuestionTest questionTest)
         {
-            throw new NotImplementedException();
+            if (questionTest == null)
+                throw new ObjectEmptyException("Question test is null");
+
+            List<QuestionTest> questionTests = GetAllQuestions().Result;
+
+            int questionTestsIndex = questionTests.FindIndex(x => x.Id == questionTest.Id);
+
+
+            if(questionTestsIndex < 0)
+                throw new ObjectEmptyException("Question test not found");
+
+            questionTests[questionTestsIndex] = questionTest;
+
+            //questionTests[questionTestsIndex].Id = questionTest.Id;
+            //questionTests[questionTestsIndex].Question = questionTest.Question;
+            //questionTests[questionTestsIndex].Answer1 = questionTest.Answer1;
+            //questionTests[questionTestsIndex].Answer2 = questionTest.Answer2;
+            //questionTests[questionTestsIndex].Answer3 = questionTest.Answer3;
+            //questionTests[questionTestsIndex].Answer4 = questionTest.Answer4;
+            //questionTests[questionTestsIndex].CorrectAnswer = questionTest.CorrectAnswer;
+            //questionTests[questionTestsIndex].IsDelete = questionTest.IsDelete;
+            //questionTests[questionTestsIndex].ChoiceQuestion = questionTest.ChoiceQuestion;
+            //questionTests[questionTestsIndex].TestCatalog = questionTest.TestCatalog;
+
+            string result = questionTests[questionTestsIndex].Equals(questionTest) ? "Question test updated successfully" : "Failed to update question test";
+
+            return Task.FromResult(result);
         }
+
         public Task<string> DeleteQuestionTest(QuestionTest questionTest)
         {
-            throw new NotImplementedException();
+            if(questionTest == null)
+                throw new ObjectEmptyException("Question test is null");
+
+            questionTest.IsDelete = true;
+
+            string result = UpdateQuestionTest(questionTest).Result;
+
+            if(result.Contains("successfully"))
+                result = "Question test deleted successfully";
+            else
+                result = "Failed to delete question test";
+
+            return Task.FromResult(result);
         }
     }
 }
