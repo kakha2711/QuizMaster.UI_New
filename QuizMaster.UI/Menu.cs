@@ -9,9 +9,12 @@ namespace QuizMaster.UI
     internal class Menu
     {
         private readonly StudentService _studentService;
-        public Menu(StudentService studentService)
+        private readonly QuestionTestRepositoryService _questionTestRepositoryService;
+
+        public Menu(StudentService studentService, QuestionTestRepositoryService questionTestRepositoryService)
         {
             _studentService = studentService;
+            _questionTestRepositoryService = questionTestRepositoryService;
         }
 
         public async Task Show()
@@ -75,12 +78,6 @@ namespace QuizMaster.UI
                 student = new Student();
 
 
-
-
-            //bool isvalid = true;
-
-            //while (isvalid)
-            //{
 
                 switch (choice)
                 {
@@ -179,7 +176,7 @@ namespace QuizMaster.UI
                         //isvalid = false;
                         break;
                 }
-            //}
+            
         }
     }
 }

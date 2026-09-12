@@ -10,7 +10,7 @@ namespace QuizMaster.Core.Interface
         public Task<Person> GetPersonByUserName(string username, string role);
         public  Task AddStudent(Person person);
         public Task<string> UpdateStudent(Person student);
-        public Task DeleteStudent(string personalNumber);
+        public Task<string> DeleteStudent(string personalNumber);
         //public  Task<Person> GetPersonByUserName<Person>(string username, string role);
     }
 }

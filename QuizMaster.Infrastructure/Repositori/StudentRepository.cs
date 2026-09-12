@@ -153,9 +153,7 @@ namespace QuizMaster.Infrastructure.Repositori
 
             var personId = persons.FindIndex(m => m.Id == student.Id);
 
-            //var personId = student.Id;
-
-
+            
                 persons[personId].Id = student.Id;
                 persons[personId].FirsName = student.FirsName;
                 persons[personId].Lastname = student.Lastname;
@@ -192,9 +190,39 @@ namespace QuizMaster.Infrastructure.Repositori
             return $"This {student.Email} email could not be updated.";
         }
 
-        public Task DeleteStudent(string personalNumber)
+        public async Task<string> DeleteStudent(string personalNumber)
         {
-            throw new NotImplementedException();
+            if (personalNumber == null)
+                throw new ObjectEmptyException("Personal number is empty!");
+
+            List<Person> persons = GetAllStudent("Student").Result;
+
+            if(persons == null)
+                throw new ObjectEmptyException("The object is empty.");
+
+            if(!persons.Any(p => p.PersonalNumber == personalNumber))
+                throw new ObjectEmptyException($"No student found with personal number {personalNumber}.");
+
+            int personToDeleteIndex = persons.FindIndex(p => p.PersonalNumber == personalNumber);
+
+            if (personToDeleteIndex == -1)
+                throw new ObjectEmptyException($"No student found with personal number {personalNumber}.");
+
+            persons[personToDeleteIndex].IsDelete = true;
+
+            string result ="";
+
+            foreach (var item in persons)
+            {
+               result = await UpdateStudent(item);
+            }
+
+            if (result.Contains("successfully"))
+                result = "Student deleted successfully";
+            else
+                result = "Failed to delete student";
+
+            return await Task.FromResult(result);
         }
 
       

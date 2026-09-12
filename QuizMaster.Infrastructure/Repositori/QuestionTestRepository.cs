@@ -6,7 +6,7 @@ using System.Text.Json;
 
 namespace QuizMaster.Infrastructure.Repositori
 {
-    internal class QuestionTestRepository : IQuestionTestRepository
+    public class QuestionTestRepository : IQuestionTestRepository
     {
         private readonly string questionTestPath = "C:\\Users\\Kakha\\source\\repos\\QuizMaster.UI\\QuizMaster.Infrastructure\\Data\\QuestionTest.txt";
         private readonly string testCatalogPath = "C:\\Users\\Kakha\\source\\repos\\QuizMaster.UI\\QuizMaster.Infrastructure\\Data\\TestCatalog.txt";
@@ -237,21 +237,38 @@ namespace QuizMaster.Infrastructure.Repositori
             return Task.FromResult(result);
         }
 
-        public Task<string> DeleteQuestionTest(QuestionTest questionTest)
+        public async Task<string> DeleteQuestionTest(QuestionTest questionTest)
         {
             if(questionTest == null)
                 throw new ObjectEmptyException("Question test is null");
 
             questionTest.IsDelete = true;
 
-            string result = UpdateQuestionTest(questionTest).Result;
+            List<QuestionTest> questionTests = await GetAllQuestions();
 
-            if(result.Contains("successfully"))
+            if(questionTests == null)
+                throw new ObjectEmptyException("No question tests found");
+
+            int questionTestToDelete = questionTests.FindIndex(x => x.Id == questionTest.Id);
+
+            if (questionTestToDelete < 0)
+                throw new ObjectEmptyException("Question test not found");
+            
+            questionTests[questionTestToDelete].IsDelete = true;
+
+            string result = "";
+
+            foreach (var item in questionTests)
+            {
+                result = await UpdateQuestionTest(item);
+            }
+
+            if (result.Contains("successfully"))
                 result = "Question test deleted successfully";
             else
                 result = "Failed to delete question test";
 
-            return Task.FromResult(result);
+            return await Task.FromResult(result);
         }
     }
 }
