@@ -38,14 +38,18 @@ namespace QuizMaster.Infrastructure.Repositori
                     {
                         Student? student = JsonSerializer.Deserialize<Student>(line);
 
-                        if (student != null && !student.IsDelete)
+                        //if (student != null && !student.IsDelete)
+
+                            if (student != null)
                             people.Add(student);
                     }
                     else if (role == "Lecturer")
                     {
                         Lecturer? lecturer = JsonSerializer.Deserialize<Lecturer>(line);
 
-                        if (lecturer != null && !lecturer.IsDelete)
+                        //if (lecturer != null && !lecturer.IsDelete)
+
+                            if (lecturer != null)
                             people.Add(lecturer);
                     }
                 }
@@ -95,7 +99,13 @@ namespace QuizMaster.Infrastructure.Repositori
                 }
 
 
-                Duplicate<Student>(students, person as Student).Wait();
+                if (students.Any(s => s.PersonalNumber == person.PersonalNumber))
+                {
+                    throw new DuplicatePersonalNumberException($"A student with personal number {person.PersonalNumber} already exists.");
+                }
+
+
+                //Duplicate<Student>(students, person as Student);
 
                 if (students.Count == 0)
                     File.AppendAllText(_studentPath, studentnew);
@@ -128,7 +138,12 @@ namespace QuizMaster.Infrastructure.Repositori
                     throw new InvalidDataException("Serialized student data is null or empty.");
                 }
 
-                Duplicate<Lecturer>(students, person as Lecturer).Wait();
+                if (students.Any(s => s.PersonalNumber == person.PersonalNumber))
+                {
+                    throw new DuplicatePersonalNumberException($"A student with personal number {person.PersonalNumber} already exists.");
+                }
+
+                //Duplicate(students, person as Lecturer);
 
                 if (students.Count == 0)
                     File.AppendAllText(_lecturePath, studentnew);
@@ -234,7 +249,7 @@ namespace QuizMaster.Infrastructure.Repositori
 
 
     
-        public async Task Duplicate<T>(List<T> sourse, T item) where T : Person
+        public async Task Duplicate(List<Person> sourse, Person item)
         {
             if (sourse.Any(s => s.PersonalNumber == item.PersonalNumber))
             {

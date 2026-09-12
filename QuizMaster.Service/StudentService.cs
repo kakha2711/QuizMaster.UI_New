@@ -62,12 +62,35 @@ namespace QuizMaster.Service
 
             if (role == "Student")
             {
-                 person = await _personRepository.GetPersonByUserName(username, role) as Student;
+                person = await _personRepository.GetPersonByUserName(username, role) as Student;
+
+                if (person == null)
+                    throw new ObjectEmptyException("You are not registered.");
+                
+
+                if (person.IsDelete)
+                    throw new ObjectEmptyException("This account has been deleted.");
+                
+                if(!BCrypt.Net.BCrypt.Verify(Password, person.Password))
+                    throw new ObjectEmptyException("Password is incorrect.");
+                
+
             }
 
             if (role == "Lecturer")
             {
                  person = await _personRepository.GetPersonByUserName(username, role) as Lecturer;
+
+                if (person == null)
+                    throw new ObjectEmptyException("You are not registered.");
+               
+                if (person.IsDelete)
+                    throw new ObjectEmptyException("This account has been deleted.");
+
+                var tt = BCrypt.Net.BCrypt.Verify(Password, person.Password);
+
+                if (!BCrypt.Net.BCrypt.Verify(Password, person.Password))
+                    throw new ObjectEmptyException("Password is incorrect.");
             }
             return person;
         }
