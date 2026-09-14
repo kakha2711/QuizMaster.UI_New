@@ -1,6 +1,6 @@
 ﻿namespace QuizMaster.Core
 {
-    public class ColloringConsole
+    public static class ColloringConsole
     {
         public static void Error(string message)
         {

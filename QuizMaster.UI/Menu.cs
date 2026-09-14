@@ -19,13 +19,20 @@ namespace QuizMaster.UI
 
         public async Task Show()
         {
-            string personRole = Role();
+            try
+            {
+                string personRole = Role();
 
-            RegisterRole(personRole, _studentService);
+                RegisterRole(personRole, _studentService);
+            }
+            catch(Exception ex)
+            {
+                ColloringConsole.Error(ex.Message);
+            }
 
 
 
-
+            //log-ირება დავამატო და ექსეფშენებში ქეჩში throw არ უნდა მეწეროს მაგის მაგივრად კონსოლეწრაითლაინი უნდა მეწეროს
 
 
 
@@ -200,7 +207,7 @@ namespace QuizMaster.UI
             return personRole;
         }
 
-        static async void RegisterRole(string personRole, StudentService _studentService)
+        static async Task RegisterRole(string personRole, StudentService _studentService)
         {
             Console.WriteLine("Do you want to register or log in?");
             Console.WriteLine("1: register");
