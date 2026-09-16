@@ -154,8 +154,14 @@ namespace QuizMaster.Infrastructure.Repositori
 
                     };
 
+                    var option =new System.Text.Json.JsonSerializerOptions
+                    {
+                        WriteIndented = true,
+                        //DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull
+                    };
+
                     //string studentnew = JsonSerializer.Serialize<Student>(person as Student);
-                    string studentnew = JsonSerializer.Serialize<Student>(student as Student);
+                    string studentnew = JsonSerializer.Serialize<Student>(student as Student, option);
 
 
                     if (string.IsNullOrWhiteSpace(studentnew) || string.IsNullOrEmpty(studentnew))
@@ -196,7 +202,13 @@ namespace QuizMaster.Infrastructure.Repositori
                     if (param == 0)
                         person.Password = BCrypt.Net.BCrypt.HashPassword(person.Password);
 
-                    string studentnew = JsonSerializer.Serialize(person);
+                    var option = new System.Text.Json.JsonSerializerOptions
+                    {
+                        WriteIndented = true,
+                        //DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull
+                    };
+
+                    string studentnew = JsonSerializer.Serialize(person, option);
 
 
                     if (string.IsNullOrWhiteSpace(studentnew) || string.IsNullOrEmpty(studentnew))

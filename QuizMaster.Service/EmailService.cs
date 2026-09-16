@@ -23,6 +23,8 @@ namespace QuizMaster.Service
             message.Subject = subject;
             message.Body = body;
 
+            
+
 
             smtp.Send(message);
         }

@@ -1,1 +1,17 @@
 {"Grade":0,"Id":1,"IsDelete":false,"FirsName":"maia","Lastname":"sartania","Email":"sartania.ka@gmail.com","PhoneNumber":"599850210","PersonalNumber":"11223344557","UserName":"Mako1","Password":"$2a$11$52nSVdngn6m0/qdIt7v64utELq6L5.xIZkXdA7eb9Yo9u.FEt0l5C","VerificationCode":"9323","IsVerified":false,"Role":1,"Gender":1}
+{
+  "Grade": 0,
+  "Id": 2,
+  "IsDelete": false,
+  "FirsName": "lasha",
+  "Lastname": "topuria",
+  "Email": "sartania.ka@gmail.com",
+  "PhoneNumber": "599451274",
+  "PersonalNumber": "99887744551",
+  "UserName": "lasha1",
+  "Password": "$2a$11$JiSueo3H3a9uSam16PJxk.19lQKrYgJbBDqRb1ocDnr.NOHGwWwNe",
+  "VerificationCode": "6921",
+  "IsVerified": false,
+  "Role": 1,
+  "Gender": 0
+}

@@ -188,7 +188,7 @@ namespace QuizMaster.UI
 
         static string Role()
         {
-            Console.WriteLine("elected role");
+            Console.WriteLine("Selected role");
             Console.WriteLine("1: Lecturer");
             Console.WriteLine("2: Student");
 
@@ -281,6 +281,16 @@ namespace QuizMaster.UI
                         return;
                     }
 
+                    if(person.Role.ToString() == "Lecturer")
+                    {
+                        await LecturersEnvironment(personRole, person as Lecturer);
+                    }
+                    
+                    if (person.Role.ToString() == "Student")
+                    {
+                        await StudentEnvironment(personRole, person as Student);
+                    }
+
                     break;
             }
 
@@ -295,6 +305,39 @@ namespace QuizMaster.UI
                await _studentService.VerifiPersonEmail(studentEmail, StudentVerificationCode, personRole);
 
             }
+        }
+
+        static async Task LecturersEnvironment(string role, Lecturer lecturer)
+        {
+            Console.WriteLine("1. Create a new test");
+            Console.WriteLine("2. View all tests");
+            Console.WriteLine("3. Edit a test");
+            Console.WriteLine("4. Delete a test");
+
+            Console.WriteLine("1. Create a new question");
+            Console.WriteLine("2. View all questions");
+            Console.WriteLine("3. Edit a question");
+            Console.WriteLine("4. Delete a question");
+
+            Console.WriteLine("1. Update leqturer");
+            Console.WriteLine("2. delete lecturer");
+        }
+
+
+        static async Task  StudentEnvironment(string role, Student student)
+        {
+            //Console.WriteLine("1. Create a new test");
+            Console.WriteLine("2. View all tests");
+            Console.WriteLine("3. Start a test");
+            //Console.WriteLine("4. Delete a test");
+
+            //Console.WriteLine("1. Create a new question");
+            //Console.WriteLine("2. View all questions");
+            //Console.WriteLine("3. Edit a question");
+            //Console.WriteLine("4. Delete a question");
+
+            Console.WriteLine("1. Update leqturer");
+            Console.WriteLine("2. delete lecturer");
         }
     }
 }
