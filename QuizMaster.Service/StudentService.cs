@@ -30,7 +30,9 @@ namespace QuizMaster.Service
             }
             catch (Exception ex)
             {
-                throw new Exception("An error occurred while retrieving all persons: " + ex.Message);
+                ColloringConsole.Error(ex.Message);
+                //throw new Exception("An error occurred while retrieving all persons: " + ex.Message);
+                throw;
             }
 
         }
@@ -54,7 +56,9 @@ namespace QuizMaster.Service
             }
             catch (Exception ex)
             {
-                throw new Exception("An error occurred while registering the person: " + ex.Message);
+                ColloringConsole.Error(ex.Message);
+                //throw new Exception("An error occurred while registering the person: " + ex.Message);
+                throw;
             }
         }
 
@@ -80,7 +84,9 @@ namespace QuizMaster.Service
             }
             catch(Exception ex)
             {
-                throw new Exception("An error occurred while retrieving the person by personal number: " + ex.Message);
+                ColloringConsole.Error(ex.Message);
+                //throw new Exception("An error occurred while retrieving the person by personal number: " + ex.Message);
+                throw;
             }
             
 
@@ -101,7 +107,9 @@ namespace QuizMaster.Service
             }
             catch (Exception ex)
             {
-                throw new Exception("An error occurred while verifying the email: " + ex.Message);
+                ColloringConsole.Error(ex.Message);
+                //throw new Exception("An error occurred while verifying the email: " + ex.Message);
+                throw;
             }
 
 
@@ -158,6 +166,7 @@ namespace QuizMaster.Service
             catch (Exception ex)
             {
                 ColloringConsole.Error(ex.Message);
+                throw;
             }
         }
 

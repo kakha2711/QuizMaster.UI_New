@@ -30,7 +30,11 @@ namespace QuizMaster.Infrastructure.Repositori
                 string[] lines = File.ReadAllLines(path);
 
                 if (lines.Length == 0 || lines.All(string.IsNullOrWhiteSpace) || lines.All(string.IsNullOrEmpty))
-                    throw new ObjectEmptyException($"The file for role '{role}' is empty at path: {path}");
+                {
+                    //lines = Array.Empty<string>();
+                    return people;
+                }
+                //throw new ObjectEmptyException($"The file for role '{role}' is empty at path: {path}");
 
                 foreach (var line in lines)
                 {
@@ -63,7 +67,7 @@ namespace QuizMaster.Infrastructure.Repositori
             }
             catch (Exception ex)
             {
-                throw new Exception($"An error occurred while retrieving students: {ex.Message}", ex);
+                throw new Exception(ex.Message);
             }
         }
 
@@ -93,20 +97,20 @@ namespace QuizMaster.Infrastructure.Repositori
                     || string.IsNullOrWhiteSpace(role) || string.IsNullOrEmpty(role))
                     throw new ObjectEmptyException("Username and role cannot be null or empty.");
 
-                List<Person> people = GetAllStudent(role).Result;
+                List<Person> people = await GetAllStudent(role);
 
                 if (people == null || !people.Any())
                     throw new ObjectEmptyException($"No people found for role '{role}'.");
 
                 Person? person = people.FirstOrDefault(m => m.UserName == username);
 
-            //if(person == null) throw new FileNotFoundException("This username is not found in the system!");
+                //if(person == null) throw new FileNotFoundException("This username is not found in the system!");
 
-            return person ?? throw new ObjectEmptyException("Person not found.");
+                return person ?? throw new ObjectEmptyException("Person not found.");
             }
             catch (Exception ex)
             {
-                var tt = ex.Message;
+
                 throw new Exception(ex.Message);
             }
 
@@ -122,14 +126,36 @@ namespace QuizMaster.Infrastructure.Repositori
 
                 if (person.Role.ToString() == "Student")
                 {
+                    
+
                     List<Student> students = (await GetAllStudent(person.Role.ToString())).Cast<Student>().ToList();
 
                     person.Id = await Counter(students);
 
-                    if (param == 0)
-                        person.Password = BCrypt.Net.BCrypt.HashPassword(person.Password);
+                    //if (param == 0)
+                        //person.Password = BCrypt.Net.BCrypt.HashPassword(person.Password);
 
-                    string studentnew = JsonSerializer.Serialize<Student>(person as Student);
+                    //Student student = person as Student ?? throw new InvalidCastException("The provided person is not of type Student.");
+                    Student student = new Student()
+                    {
+                        Id = person.Id,
+                        FirsName = person.FirsName,
+                        Lastname = person.Lastname,
+                        Email = person.Email,
+                        Password = BCrypt.Net.BCrypt.HashPassword(person.Password),
+                        PhoneNumber = person.PhoneNumber,
+                        PersonalNumber = person.PersonalNumber,
+                        UserName = person.UserName,
+                        VerificationCode = person.VerificationCode,
+                        IsVerified = person.IsVerified,
+                        Role = person.Role,
+                        Gender = person.Gender,
+                        Grade = 0
+
+                    };
+
+                    //string studentnew = JsonSerializer.Serialize<Student>(person as Student);
+                    string studentnew = JsonSerializer.Serialize<Student>(student as Student);
 
 
                     if (string.IsNullOrWhiteSpace(studentnew) || string.IsNullOrEmpty(studentnew))
@@ -202,17 +228,16 @@ namespace QuizMaster.Infrastructure.Repositori
             }
             catch (Exception ex)
             {
-                throw new Exception($"An error occurred while adding the student: {ex.Message}", ex);
+                throw new Exception(ex.Message);
 
             }
         }
-
 
         public async Task<string> UpdateStudent(Person student)
         {
             try
             {
-                var persons = GetAllStudent(student.Role.ToString()).Result;
+                var persons = await GetAllStudent(student.Role.ToString());
 
                 var personId = persons.FindIndex(m => m.Id == student.Id);
 
@@ -250,18 +275,18 @@ namespace QuizMaster.Infrastructure.Repositori
             }
             catch (Exception ex)
             {
-                throw new Exception($"An error occurred while updating the student: {ex.Message}", ex);
+                throw new Exception(ex.Message);
             }
         }
 
         public async Task<string> DeleteStudent(string personalNumber)
         {
-           try
+            try
             {
                 if (personalNumber == null)
                     throw new ObjectEmptyException("Personal number is empty!");
 
-                List<Person> persons = GetAllStudent("Student").Result;
+                List<Person> persons = await GetAllStudent("Student");
 
                 if (persons == null)
                     throw new ObjectEmptyException("The object is empty.");
@@ -292,7 +317,7 @@ namespace QuizMaster.Infrastructure.Repositori
             }
             catch (Exception ex)
             {
-                throw new Exception($"An error occurred while deleting the student: {ex.Message}", ex);
+                throw new Exception(ex.Message);
             }
         }
 

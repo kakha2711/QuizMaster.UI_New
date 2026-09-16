@@ -11,7 +11,7 @@ namespace QuizMaster.Service.Exceptions
 
         public DuplicatePersonalNumberException(string? message) : base(message)
         {
-            ColloringConsole.Error(message);
+            //ColloringConsole.Error(message);
         }
     }
 }

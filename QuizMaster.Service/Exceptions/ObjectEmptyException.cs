@@ -9,7 +9,7 @@ namespace QuizMaster.Service.Exceptions
 
         public ObjectEmptyException(string? message) : base(message)
         {
-            ColloringConsole.Error(message);
+            //ColloringConsole.Error(message);
         }
     }
 }

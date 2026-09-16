@@ -1,0 +1,1 @@
+{"Id":1,"IsDelete":false,"FirsName":"kakha","Lastname":"sartania","Email":"sartania.ka@gmail.com","PhoneNumber":"599985226","PersonalNumber":"01011015058","UserName":"sartusha1","Password":"$2a$11$keNqImr4E6PXrsG1Y4.lMeTomUAOKSrZxAjevpp67JVDjjHemWD5m","VerificationCode":"3778","IsVerified":true,"Role":0,"Gender":0}
