@@ -23,7 +23,7 @@ namespace QuizMaster.UI
             {
                 string personRole = Role();
 
-                RegisterRole(personRole, _studentService);
+                RegisterRole(personRole, _questionTestRepositoryService, _studentService);
             }
             catch(Exception ex)
             {
@@ -33,154 +33,6 @@ namespace QuizMaster.UI
 
 
             //log-ირება დავამატო და ექსეფშენებში ქეჩში throw არ უნდა მეწეროს მაგის მაგივრად კონსოლეწრაითლაინი უნდა მეწეროს
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-            //Console.WriteLine("1. Register as a new Person");
-            //Console.WriteLine("2. View all students");
-            //Console.WriteLine("3. View Person from personalnumber");
-            //Console.WriteLine("4. Delete Person from personalnumber"); //dasaceria
-            //Console.WriteLine("5. Verifi Person email");
-            //Console.WriteLine("6. LogIn Person");//dasaceria
-            //Console.WriteLine("7. Exit");
-
-            //string choice = Console.ReadLine();
-
-            //Person student;
-
-            //if (personRole == "Lecturer")
-            //    student = new Lecturer();
-            //else
-            //    student = new Student();
-
-
-
-            //    switch (choice)
-            //    {
-            //        case "1":
-
-            //            Console.Write("Enter FirsName: ");
-            //            student.FirsName = Console.ReadLine();
-
-            //            Console.Write("Enter Lastname: ");
-            //            student.Lastname = Console.ReadLine();
-
-            //            Console.Write("Enter Email: ");
-            //            student.Email = Console.ReadLine();
-
-            //            Console.Write("Enter PhoneNumber: ");
-            //            student.PhoneNumber = Console.ReadLine();
-
-            //            Console.Write("Enter PersonalNumber: ");
-            //            student.PersonalNumber = Console.ReadLine();
-
-            //            Console.Write("Enter UserName: ");
-            //            student.UserName = Console.ReadLine();
-
-            //            Console.Write("Enter Password: ");
-            //            student.Password = Console.ReadLine();
-
-            //            Console.Write("Enter Gender: ");
-            //            student.Gender = Enum.Parse<Gender>(Console.ReadLine(), true);
-
-            //            student.Role = (Role)Enum.Parse(typeof(Role), personRole, true);
-
-            //            await _studentService.RegisterPerson(student);
-
-            //            break;
-
-            //        case "2":
-            //            List<Person> students ;
-            //            if (personRole == "Lecturer")
-            //                students = await _studentService.GetAllPerson(personRole);
-            //            else
-            //                students = await _studentService.GetAllPerson(personRole);
-
-            //            foreach (var item in students)
-            //            {
-            //                //Console.WriteLine($"Id: {item.Id},\n FirsName: {item.FirsName},\n Lastname: {item.Lastname},\n Email: {item.Email},\n PhoneNumber: {item.PhoneNumber},\n PersonalNumber: {item.PersonalNumber},\n Password: {item.Password},\n VerificationCode: {item.VerificationCode},\n IsVerified: {item.IsVerified},\n Role: {item.Role},\n Gender: {item.Gender},\n Grade: {item.Grade}\n\n");
-            //                Console.WriteLine(item.ToString());
-            //            }
-
-            //            break;
-
-            //        case "3":
-
-            //        Console.WriteLine("Enter PersonalNumber");
-            //        string? findFromPersonalNumber = Console.ReadLine();
-
-            //        Person studentPeronalNumber = await _studentService.GetPersonByPersonalNumber(findFromPersonalNumber, personRole);
-
-            //        Console.WriteLine(studentPeronalNumber.ToString());
-            //        break;
-
-            //        case "4":
-
-            //            //Console.WriteLine("Enter PersonalNumber");
-            //            //string? deleteFromPersonalNumber = Console.ReadLine();
-
-            //            //await _studentService.DeleteStudentByPersonalNumber(deleteFromPersonalNumber);
-            //            break;
-
-            //        case "5":
-
-            //        Console.WriteLine($"Enter {personRole} email");
-            //        string? studentEmail = Console.ReadLine();
-
-            //        Console.WriteLine($"Enter {personRole} VerificationCode");
-            //        string? StudentVerificationCode = Console.ReadLine();
-
-            //        await _studentService.VerifiPersonEmail(studentEmail, StudentVerificationCode, personRole);
-
-            //            break;
-
-            //        case "6":
-
-            //            //Console.WriteLine("Enter StudentUsername");
-            //            //string? studentUserName = Console.ReadLine();
-
-            //            //Console.WriteLine("Enter StudentPassword");
-            //            //string? studentPassword = Console.ReadLine();
-
-            //            //var studentLogIn = await _studentService.LogIn<Person>(studentUserName, studentPassword, personRole);
-
-            //            //Console.WriteLine(studentLogIn.ToString());
-
-            //            break;
-
-            //        case "7":
-            //            //isvalid = false;
-            //            break;
-            //    }
 
         }
 
@@ -207,7 +59,7 @@ namespace QuizMaster.UI
             return personRole;
         }
 
-        static async Task RegisterRole(string personRole, StudentService _studentService)
+        static async Task RegisterRole(string personRole, QuestionTestRepositoryService _questionTestRepositoryService, StudentService _studentService)
         {
             Console.WriteLine("Do you want to register or log in?");
             Console.WriteLine("1: register");
@@ -275,7 +127,7 @@ namespace QuizMaster.UI
 
                     if(!person.IsVerified)
                     {
-                        ColloringConsole.Error("Your account is verified.");
+                        ColloringConsole.Error("Your account is unverified.");
 
                         VerifiMail(personRole, _studentService);
                         return;
@@ -283,7 +135,7 @@ namespace QuizMaster.UI
 
                     if(person.Role.ToString() == "Lecturer")
                     {
-                        await LecturersEnvironment(personRole, person as Lecturer);
+                        await LecturersEnvironment(personRole, _questionTestRepositoryService, _studentService, person as Lecturer);
                     }
                     
                     if (person.Role.ToString() == "Student")
@@ -307,20 +159,105 @@ namespace QuizMaster.UI
             }
         }
 
-        static async Task LecturersEnvironment(string role, Lecturer lecturer)
+        static async Task LecturersEnvironment(string role, QuestionTestRepositoryService _questionTestRepositoryService, StudentService _studentService, Lecturer lecturer)
         {
-            Console.WriteLine("1. Create a new test");
-            Console.WriteLine("2. View all tests");
-            Console.WriteLine("3. Edit a test");
-            Console.WriteLine("4. Delete a test");
+            Console.WriteLine("1. View all students");
+            Console.WriteLine("2. Create a new test");
+            Console.WriteLine("3. View all tests");
+            Console.WriteLine("4. Edit a test");
+            Console.WriteLine("5. Delete a test");
 
-            Console.WriteLine("1. Create a new question");
-            Console.WriteLine("2. View all questions");
-            Console.WriteLine("3. Edit a question");
-            Console.WriteLine("4. Delete a question");
+            Console.WriteLine("6. Create a new question");
+            Console.WriteLine("7. View all questions");
+            Console.WriteLine("8. Edit a question");
+            Console.WriteLine("9. Delete a question");
 
-            Console.WriteLine("1. Update leqturer");
-            Console.WriteLine("2. delete lecturer");
+            Console.WriteLine("10. Update lecturer");
+            Console.WriteLine("11. Delete lecturer");
+
+            Console.WriteLine("Write the appropriate number.");
+            string? input = Console.ReadLine();
+
+            TestCatalog questionTest = new TestCatalog();
+
+            switch (input)
+            {
+                case "1":
+                    var students =await _studentService.GetAllPerson("Student");
+
+                    foreach (var item in students)
+                    {
+                        Console.WriteLine(item.ToString());
+                    }
+
+                    break;
+                case "2":
+
+                    Console.WriteLine("Enter TestTitle");
+                    string? testTitle = Console.ReadLine();
+                    questionTest.TestTitle = testTitle;
+
+                    Console.WriteLine("Enter Topic");
+                    string? topic = Console.ReadLine();
+                    questionTest.Topic = topic;
+
+                    Console.WriteLine("Enter QuestionsNumber");
+                    string? questionsNumber = Console.ReadLine();
+                    questionTest.QuestionsNumber = double.Parse(questionsNumber);
+
+                    Console.WriteLine("Enter MaximumScore");
+                    string? maximumScore = Console.ReadLine();
+                    questionTest.MaximumScore = double.Parse(maximumScore);
+
+                    Console.WriteLine("Enter DateTime");
+                    string? dateTime = Console.ReadLine();
+                    questionTest.DateTime = byte.Parse(dateTime);
+
+                    //Console.WriteLine("Enter PassingPercentage");
+                    //string? passingPercentage = Console.ReadLine();
+                    //questionTest.PassingPercentage = byte.Parse(PassingPercentage);
+
+                    Console.WriteLine("Enter PassingPercentage");
+                    string? passingPercentage = Console.ReadLine();
+                    questionTest.PassingPercentage = byte.Parse(passingPercentage);
+
+                    await _questionTestRepositoryService.AddTestCatalog(questionTest);
+
+                    break;
+                case "3":
+
+                    var ttt = await _questionTestRepositoryService.GetAllTestsCatalog();
+
+                    foreach (var item in ttt)
+                    {
+                        Console.WriteLine(item.ToString());
+                    }
+
+                    break;
+                case "4":
+
+                    break;
+                case "5":
+                    break;
+                case "6":
+                    break;
+                case "7":
+                    break;
+                case "8":
+                    break;
+                case "9":
+                    break;
+                case "10":
+                    break;
+                case "11":
+                    break;
+            }
+
+
+
+
+
+
         }
 
 

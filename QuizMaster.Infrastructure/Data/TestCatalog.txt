@@ -1,2 +1,3 @@
-{"Grade":0,"Id":1,"IsDelete":false,"FirsName":"lasha","Lastname":"topuria","Email":"sartania0.ka@gmail.com","PhoneNumber":"599850210","PersonalNumber":"0123456789","UserName":"lasha12","Password":"$2a$11$QirFzvwzLFB91FMPszwxHOjdy9Z5ZH6KIfAwtkO8VMlQH1IKIrzfK","VerificationCode":"8079","IsVerified":false,"Role":1,"Gender":0}
-{"Grade":0,"Id":2,"IsDelete":true,"FirsName":"xatuna","Lastname":"robaqidze","Email":"sartania.ka@gmail.com","PhoneNumber":"577121315","PersonalNumber":"98765432101","UserName":"xato15","Password":"$2a$11$qnYuncfA9RGEMxrN3wXTjeytFGVhyOlj8TcokkWxRdgOKPEOUyEu2","VerificationCode":"1327","IsVerified":true,"Role":1,"Gender":1}
+{"Id":1,"TestTitle":"C# Basics","Topic":"Variable and loops","QuestionsNumber":10,"MaximumScore":100,"DateTime":15,"PassingPercentage":60,"IsDelete":false}
+{"Id":2,"TestTitle":"OOP in C#","Topic":"Classes \u0026 Inheritance","QuestionsNumber":15,"MaximumScore":120,"DateTime":20,"PassingPercentage":70,"IsDelete":false}
+{"Id":3,"TestTitle":"SQL Fundamentals","Topic":"SELECT \u0026 JOIN","QuestionsNumber":20,"MaximumScore":120,"DateTime":60,"PassingPercentage":65,"IsDelete":false}

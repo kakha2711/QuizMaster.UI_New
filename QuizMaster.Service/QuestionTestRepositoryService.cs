@@ -1,4 +1,5 @@
 ﻿
+using QuizMaster.Core;
 using QuizMaster.Core.Interface;
 using QuizMaster.Core.Model;
 
@@ -26,7 +27,26 @@ namespace QuizMaster.Service
 
         public async Task AddTestCatalog(TestCatalog testCatalog)
         {
-            await _questionTestRepository.AddTestCatalog(testCatalog);
+            try
+            {
+                var tt =await _questionTestRepository.AddTestCatalog(testCatalog);
+
+                if(tt.Contains("success"))
+                    ColloringConsole.Success(tt);
+                else
+                    ColloringConsole.Error(tt);
+            }
+            catch (Exception ex)
+            {
+                // Handle the exception (e.g., log it, rethrow it, etc.)
+                //throw new Exception("An error occurred while adding the test catalog.", ex);
+
+                if(ex.Message.Contains("success"))
+                    ColloringConsole.Success(ex.Message);
+                else
+                    ColloringConsole.Error(ex.Message);
+
+            }
         }
 
         public async Task UpdateTestCatalog(TestCatalog testCatalog)

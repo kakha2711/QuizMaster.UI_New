@@ -1,17 +1,3 @@
-{"Grade":0,"Id":1,"IsDelete":false,"FirsName":"maia","Lastname":"sartania","Email":"sartania.ka@gmail.com","PhoneNumber":"599850210","PersonalNumber":"11223344557","UserName":"Mako1","Password":"$2a$11$52nSVdngn6m0/qdIt7v64utELq6L5.xIZkXdA7eb9Yo9u.FEt0l5C","VerificationCode":"9323","IsVerified":false,"Role":1,"Gender":1}
-{
-  "Grade": 0,
-  "Id": 2,
-  "IsDelete": false,
-  "FirsName": "lasha",
-  "Lastname": "topuria",
-  "Email": "sartania.ka@gmail.com",
-  "PhoneNumber": "599451274",
-  "PersonalNumber": "99887744551",
-  "UserName": "lasha1",
-  "Password": "$2a$11$JiSueo3H3a9uSam16PJxk.19lQKrYgJbBDqRb1ocDnr.NOHGwWwNe",
-  "VerificationCode": "6921",
-  "IsVerified": false,
-  "Role": 1,
-  "Gender": 0
-}
+{"Grade":0,"Id":1,"IsDelete":false,"FirsName":"lash","Lastname":"topuria","Email":"sartania.ka@gmail.com","PhoneNumber":"514070703","PersonalNumber":"11225544339","UserName":"puntika84","Password":"$2a$11$xVZmEX6Ez/Ja3//cp2QfBe0k5kpxoEQAY6MX6ahrEcu9H53xlEsV6","VerificationCode":"7962","IsVerified":true,"Role":1,"Gender":0}
+{"Grade":0,"Id":2,"IsDelete":false,"FirsName":"cico","Lastname":"kachkachishvili","Email":"sartania.ka@gmail.com","PhoneNumber":"599850130","PersonalNumber":"99557788441","UserName":"cico74","Password":"$2a$11$dzdgAopHEGNQjb7aHTKB5OavxJVU81NQM/LmF00ToKPoFG/1McV5W","VerificationCode":"9283","IsVerified":false,"Role":1,"Gender":1}
+{"Grade":0,"Id":3,"IsDelete":false,"FirsName":"lana","Lastname":"shiolashvili","Email":"sartania.ka@gmail.com","PhoneNumber":"555414141","PersonalNumber":"55448877223","UserName":"svili12","Password":"$2a$11$EU/tlftvWLv6yUQNvX3MTegbOMPvE0r/XH8xjTsWpYEVj4FSVMaOa","VerificationCode":"8578","IsVerified":false,"Role":1,"Gender":1}

@@ -116,7 +116,7 @@ namespace QuizMaster.Infrastructure.Repositori
 
         }
 
-        public async Task AddStudent(Person person, int param = 0)
+        public async Task<string> AddStudent(Person person, int param = 0)
         {
 
             try
@@ -124,25 +124,28 @@ namespace QuizMaster.Infrastructure.Repositori
                 if (person == null)
                     throw new ObjectEmptyException("This object is empty!");
 
+                var validator = new PersonValidator();
+                var result = validator.Validate(person);
+
+                if (!result.IsValid)
+                    throw new ValidationException(result.ToString());
+
                 if (person.Role.ToString() == "Student")
                 {
-                    
-
                     List<Student> students = (await GetAllStudent(person.Role.ToString())).Cast<Student>().ToList();
 
                     person.Id = await Counter(students);
 
-                    //if (param == 0)
-                        //person.Password = BCrypt.Net.BCrypt.HashPassword(person.Password);
 
-                    //Student student = person as Student ?? throw new InvalidCastException("The provided person is not of type Student.");
                     Student student = new Student()
                     {
                         Id = person.Id,
                         FirsName = person.FirsName,
                         Lastname = person.Lastname,
                         Email = person.Email,
-                        Password = BCrypt.Net.BCrypt.HashPassword(person.Password),
+
+                        //Password = BCrypt.Net.BCrypt.HashPassword(person.Password),
+                        
                         PhoneNumber = person.PhoneNumber,
                         PersonalNumber = person.PersonalNumber,
                         UserName = person.UserName,
@@ -154,14 +157,12 @@ namespace QuizMaster.Infrastructure.Repositori
 
                     };
 
-                    var option =new System.Text.Json.JsonSerializerOptions
-                    {
-                        WriteIndented = true,
-                        //DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull
-                    };
+                    if (param == 0)
+                        student.Password = BCrypt.Net.BCrypt.HashPassword(person.Password);
+                    else
+                        student.Password = person.Password;
 
-                    //string studentnew = JsonSerializer.Serialize<Student>(person as Student);
-                    string studentnew = JsonSerializer.Serialize<Student>(student as Student, option);
+                    string studentnew = JsonSerializer.Serialize<Student>(student as Student);
 
 
                     if (string.IsNullOrWhiteSpace(studentnew) || string.IsNullOrEmpty(studentnew))
@@ -175,9 +176,6 @@ namespace QuizMaster.Infrastructure.Repositori
                         throw new DuplicatePersonalNumberException($"A student with personal number {person.PersonalNumber} already exists.");
                     }
 
-
-                    //Duplicate<Student>(students, person as Student);
-
                     if (students.Count == 0)
                         File.AppendAllText(_studentPath, studentnew);
                     else
@@ -186,9 +184,9 @@ namespace QuizMaster.Infrastructure.Repositori
                     Student? addedStudent = (Student)GetPersonByPersonalNumber(person.PersonalNumber, person.Role.ToString());
 
                     if (addedStudent != null)
-                        ColloringConsole.Success($"Student with personal number {addedStudent.PersonalNumber} added successfully.");
+                        return ($"Student with personal number {addedStudent.PersonalNumber} added successfully.");
                     else
-                        ColloringConsole.Error($"Failed to add student with personal number {person.PersonalNumber}.");
+                        return  ($"Failed to add student with personal number {person.PersonalNumber}.");
 
                 }
 
@@ -202,13 +200,9 @@ namespace QuizMaster.Infrastructure.Repositori
                     if (param == 0)
                         person.Password = BCrypt.Net.BCrypt.HashPassword(person.Password);
 
-                    var option = new System.Text.Json.JsonSerializerOptions
-                    {
-                        WriteIndented = true,
-                        //DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull
-                    };
+                    
 
-                    string studentnew = JsonSerializer.Serialize(person, option);
+                    string studentnew = JsonSerializer.Serialize(person);
 
 
                     if (string.IsNullOrWhiteSpace(studentnew) || string.IsNullOrEmpty(studentnew))
@@ -221,7 +215,7 @@ namespace QuizMaster.Infrastructure.Repositori
                         throw new DuplicatePersonalNumberException($"A student with personal number {person.PersonalNumber} already exists.");
                     }
 
-                    //Duplicate(students, person as Lecturer);
+                   
 
                     if (students.Count == 0)
                         File.AppendAllText(_lecturePath, studentnew);
@@ -231,12 +225,14 @@ namespace QuizMaster.Infrastructure.Repositori
                     Lecturer? addedStudent = (Lecturer)GetPersonByPersonalNumber(person.PersonalNumber, person.Role.ToString());
 
                     if (addedStudent != null)
-                        ColloringConsole.Success($"Lecturer with personal number {addedStudent.PersonalNumber} added successfully.");
+                        return ($"Lecturer with personal number {addedStudent.PersonalNumber} added successfully.");
                     else
-                        ColloringConsole.Error($"Failed to add Lecturer with personal number {person.PersonalNumber}.");
+                        return ($"Failed to add Lecturer with personal number {person.PersonalNumber}.");
 
 
                 }
+
+                return ($"Failed to add person with personal number {person.PersonalNumber}.");
             }
             catch (Exception ex)
             {
@@ -275,12 +271,14 @@ namespace QuizMaster.Infrastructure.Repositori
                 else
                     File.WriteAllText(_lecturePath, string.Empty);
 
+                string resultPerson = string.Empty;
+
                 foreach (var item in persons)
-                    AddStudent(item, 1);
+                   resultPerson = await AddStudent(item, 1);
 
-                bool personNew = persons.FirstOrDefault(m => m.PersonalNumber == student.PersonalNumber).IsVerified;
+                //bool personNew = persons.FirstOrDefault(m => m.PersonalNumber == student.PersonalNumber).IsVerified;
 
-                if (personNew)
+                if (resultPerson.Contains("successfully"))
                     return $"This {student.Email} email is successfully updated.";
 
                 return $"This {student.Email} email could not be updated.";

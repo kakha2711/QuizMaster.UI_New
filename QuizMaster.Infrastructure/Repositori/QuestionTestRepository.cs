@@ -94,7 +94,7 @@ namespace QuizMaster.Infrastructure.Repositori
             testCatalogs[TestCatalogId].Id = testCatalog.Id;
             testCatalogs[TestCatalogId].TestTitle = testCatalog.TestTitle;
             testCatalogs[TestCatalogId].Topic = testCatalog.Topic;
-            testCatalogs[TestCatalogId].QuctionsNumber = testCatalog.QuctionsNumber;
+            testCatalogs[TestCatalogId].QuestionsNumber = testCatalog.QuestionsNumber;
             testCatalogs[TestCatalogId].MaximumScore = testCatalog.MaximumScore;
             testCatalogs[TestCatalogId].DateTime = testCatalog.DateTime;
             testCatalogs[TestCatalogId].PassingPercentage = testCatalog.PassingPercentage;

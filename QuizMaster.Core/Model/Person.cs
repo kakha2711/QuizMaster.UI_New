@@ -59,7 +59,7 @@ namespace QuizMaster.Core.Model
 
             RuleFor(x => x.Role).IsInEnum().WithMessage("Role must be a valid enum value.");
             RuleFor(x => x.Gender).IsInEnum().WithMessage("Gender must be a valid enum value.");
-            RuleFor(x => x.Id).InclusiveBetween(1, int.MaxValue).WithMessage("Id must be greater than 0.");
+            RuleFor(x => x.Id).InclusiveBetween(0, int.MaxValue).WithMessage("Id must be greater than 0.");
         }
     }
 }

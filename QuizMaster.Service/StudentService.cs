@@ -50,7 +50,16 @@ namespace QuizMaster.Service
 
                 person.VerificationCode = random.Next(1000, 9999).ToString();
 
-                await _personRepository.AddStudent(person);
+               string resultPerson = await _personRepository.AddStudent(person);
+
+                if(resultPerson.Contains("successfully"))
+                {
+                    ColloringConsole.Success(resultPerson);
+                }
+                else
+                {
+                    ColloringConsole.Error(resultPerson);
+                }
 
                 EmailService.SendEmail(person.Email, "Email Verification", $"Your verification code is: {person.VerificationCode}");
             }
@@ -138,6 +147,7 @@ namespace QuizMaster.Service
                     if (person.IsDelete)
                         throw new ObjectEmptyException("This account has been deleted.");
 
+                    var tt = BCrypt.Net.BCrypt.Verify(Password, person.Password);
                     if (!BCrypt.Net.BCrypt.Verify(Password, person.Password))
                         throw new ObjectEmptyException("Password is incorrect.");
 
