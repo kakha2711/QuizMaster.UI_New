@@ -435,6 +435,7 @@ namespace QuizMaster.Infrastructure.Repositori
                     File.AppendAllText(testResult, Environment.NewLine + testResultJson);
             }
 
+
         }
     }
 }
