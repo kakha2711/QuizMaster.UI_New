@@ -11,4 +11,8 @@
     <ProjectReference Include="..\QuizMaster.Service\QuizMaster.Service.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Data\LogFil\" />
+  </ItemGroup>
+
 </Project>

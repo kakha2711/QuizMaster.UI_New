@@ -17,7 +17,7 @@ namespace QuizMaster.Core.Interface
         //for Lecturer
         Task<List<QuestionTest>> GetAllQuestions();
         Task<List<QuestionTest>> GetQuestionsByTestCatalogId(int testCatalogId);
-        Task<string> AddQuestionTest(QuestionTest questionTest);
+        Task<string> AddQuestionTest(QuestionTest questionTest, AnswerTest[] answerTests);
         Task<string> UpdateQuestionTest(QuestionTest questionTest);
         Task<string> DeleteQuestionTest(QuestionTest questionTest);
     }

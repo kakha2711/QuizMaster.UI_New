@@ -6,6 +6,12 @@ namespace QuizMaster.Core.Model
 {
     public class AnswerTest
     {
+        public AnswerTest()
+        {
+            var validator = new AnswerTestValidator();
+            var result = validator.Validate(this);
+        }
+
         public int Id { get; set; }
         public string? Answer { get; set; }
         public bool IsCorrect { get; set; }

@@ -8,6 +8,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Spectre.Console" Version="0.57.2" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\QuizMaster.Core\QuizMaster.Core.csproj" />
     <ProjectReference Include="..\QuizMaster.Infrastructure\QuizMaster.Infrastructure.csproj" />
     <ProjectReference Include="..\QuizMaster.Service\QuizMaster.Service.csproj" />

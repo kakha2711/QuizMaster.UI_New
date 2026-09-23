@@ -3,6 +3,7 @@ using QuizMaster.Core;
 using QuizMaster.Core.Enum;
 using QuizMaster.Core.Model;
 using QuizMaster.Service;
+using Spectre.Console;
 
 namespace QuizMaster.UI
 {
@@ -25,14 +26,14 @@ namespace QuizMaster.UI
 
                 RegisterRole(personRole, _questionTestRepositoryService, _studentService);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 ColloringConsole.Error(ex.Message);
             }
 
 
 
-            //log-ირება დავამატო და ექსეფშენებში ქეჩში throw არ უნდა მეწეროს მაგის მაგივრად კონსოლეწრაითლაინი უნდა მეწეროს
+            //log-ირება დავამატო
 
         }
 
@@ -103,6 +104,16 @@ namespace QuizMaster.UI
                     Console.Write("Enter Gender: ");
                     person.Gender = Enum.Parse<Gender>(Console.ReadLine(), true);
 
+
+                    //var features = AnsiConsole.Prompt(
+                    //    new MultiSelectionPrompt<string>()
+                    //    .Title("Select [green]features[/] to enable:")
+                    //    .AddChoices("Female", "Male"));
+
+                    //AnsiConsole.MarkupLine($"Enabled: [blue]{string.Join(", ", features)}[/]");
+
+                    //person.Gender = features;
+
                     person.Role = (Role)Enum.Parse(typeof(Role), personRole, true);
 
                     await _studentService.RegisterPerson(person);
@@ -125,7 +136,7 @@ namespace QuizMaster.UI
 
                     person = await _studentService.LogIn(userName, password, personRole);
 
-                    if(!person.IsVerified)
+                    if (!person.IsVerified)
                     {
                         ColloringConsole.Error("Your account is unverified.");
 
@@ -133,11 +144,11 @@ namespace QuizMaster.UI
                         return;
                     }
 
-                    if(person.Role.ToString() == "Lecturer")
+                    if (person.Role.ToString() == "Lecturer")
                     {
                         await LecturersEnvironment(personRole, _questionTestRepositoryService, _studentService, person as Lecturer);
                     }
-                    
+
                     if (person.Role.ToString() == "Student")
                     {
                         await StudentEnvironment(personRole, person as Student);
@@ -151,10 +162,10 @@ namespace QuizMaster.UI
                 Console.WriteLine($"Enter {personRole} email");
                 string? studentEmail = Console.ReadLine();
 
-               Console.WriteLine($"Enter {personRole} VerificationCode");
-               string? StudentVerificationCode = Console.ReadLine();
+                Console.WriteLine($"Enter {personRole} VerificationCode");
+                string? StudentVerificationCode = Console.ReadLine();
 
-               await _studentService.VerifiPersonEmail(studentEmail, StudentVerificationCode, personRole);
+                await _studentService.VerifiPersonEmail(studentEmail, StudentVerificationCode, personRole);
 
             }
         }
@@ -183,7 +194,7 @@ namespace QuizMaster.UI
             switch (input)
             {
                 case "1":
-                    var students =await _studentService.GetAllPerson("Student");
+                    var students = await _studentService.GetAllPerson("Student");
 
                     foreach (var item in students)
                     {
@@ -226,20 +237,93 @@ namespace QuizMaster.UI
                     break;
                 case "3":
 
-                    var ttt = await _questionTestRepositoryService.GetAllTestsCatalog();
+                    List<TestCatalog> testCatalogs = await _questionTestRepositoryService.GetAllTestsCatalog();
 
-                    foreach (var item in ttt)
+                    foreach (var item in testCatalogs)
                     {
                         Console.WriteLine(item.ToString());
                     }
 
                     break;
-                case "4":
+                //case "4":
 
-                    break;
-                case "5":
-                    break;
+                //    break;
+                //case "5":
+                //    break;
                 case "6":
+
+                    QuestionTest question = new QuestionTest();
+
+                    AnswerTest[] answerTests = new AnswerTest[4];
+
+                    List<TestCatalog> testCatalogs1 = await _questionTestRepositoryService.GetAllTestsCatalog();
+
+                    int num = 0;
+                    int testQuestioncount = 0;
+
+                    while (num < testQuestioncount)
+                    {
+
+                        Console.Write($"Enter {num + 1} Question: ");
+                        question.QuestionText = Console.ReadLine();
+
+                        Console.Write("Enter ChoiceQuestion: ");
+
+                        var fruit = AnsiConsole.Prompt(
+                             new SelectionPrompt<string>()
+                            .Title("Enter ChoiceQuestion:")
+                            .AddChoices("SingleChoiceQuestion", "MultiChoiceQuestion"));
+
+                        AnsiConsole.MarkupLine($"You selected: [green]{fruit}[/]");
+
+                        question.ChoiceQuestion = Enum.Parse<ChoiceQuestion>(fruit, true);
+
+                        Console.WriteLine("Choose which test to add the question to.");
+
+                        var selectedQuestion = AnsiConsole.Prompt(
+                               new SelectionPrompt<TestCatalog>()
+                                   .Title("Select a [green]book[/]")
+                                   .PageSize(10)
+                                   .UseConverter(Test => $"{Test.Id} by {Test.TestTitle}")
+                                   .AddChoices(testCatalogs1));
+
+                        AnsiConsole.MarkupLine($"You selected: [yellow]{selectedQuestion.TestTitle}[/]");
+
+                        int testQuestionId =  Convert.ToInt32(selectedQuestion.Id);
+
+                        question.TestCatalogId = testQuestionId;
+
+                        testQuestioncount = Convert.ToInt32(selectedQuestion.QuestionsNumber);
+
+                        for (int i = 0; i < 4; i++)
+                        {
+                            answerTests[i] = new AnswerTest();
+
+                            Console.Write($"Enter {i + 1} Answer: ");
+                            answerTests[i].Answer = Console.ReadLine();
+
+                            Console.Write("Enter IsCorrect: ");
+
+                            string? answer = AnsiConsole.Prompt(
+                                 new SelectionPrompt<string>()
+                                .Title("Enter IsCorrect:")
+                                .AddChoices("True", "False"));
+
+                            AnsiConsole.MarkupLine($"You selected: [green]{answer}[/]");
+
+                            bool isvalis = bool.TryParse(answer, out bool result);
+
+                            answerTests[i].IsCorrect = result;
+
+                        }
+
+                        _questionTestRepositoryService.AddQuestionTest(question, answerTests.ToArray());
+                        num++;
+
+                    } 
+
+                    //Console.Write("Enter question: ");
+
                     break;
                 case "7":
                     break;
@@ -261,7 +345,7 @@ namespace QuizMaster.UI
         }
 
 
-        static async Task  StudentEnvironment(string role, Student student)
+        static async Task StudentEnvironment(string role, Student student)
         {
             //Console.WriteLine("1. Create a new test");
             Console.WriteLine("2. View all tests");

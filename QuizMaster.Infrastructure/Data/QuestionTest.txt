@@ -1,0 +1,25 @@
+{"Id":1,"QuestionText":"romeli tipi inaxavs mtel ricxvs","IsDelete":false,"ChoiceQuestion":0,"TestCatalogId":1}
+{"Id":2,"QuestionText":"romeli simbolo gamoiyeneba minichebistvis","IsDelete":false,"ChoiceQuestion":0,"TestCatalogId":1}
+{"Id":3,"QuestionText":"Console.WriteLine() ras aketebs","IsDelete":false,"ChoiceQuestion":0,"TestCatalogId":1}
+{"Id":4,"QuestionText":"romeli cikli mushaobs mashin, roca piroba cheshmaritia","IsDelete":false,"ChoiceQuestion":0,"TestCatalogId":1}
+{"Id":5,"QuestionText":"romeli monacemis tipia True/False","IsDelete":false,"ChoiceQuestion":0,"TestCatalogId":1}
+{"Id":6,"QuestionText":"masivis pirveli indeqsi aris","IsDelete":false,"ChoiceQuestion":0,"TestCatalogId":1}
+{"Id":7,"QuestionText":"if ristvis gamoikeneba","IsDelete":false,"ChoiceQuestion":0,"TestCatalogId":1}
+{"Id":8,"QuestionText":"romeli tipi inaxavs teqsts","IsDelete":false,"ChoiceQuestion":0,"TestCatalogId":1}
+{"Id":9,"QuestionText":"for ciklshi ramdeni nacilia","IsDelete":false,"ChoiceQuestion":0,"TestCatalogId":1}
+{"Id":10,"QuestionText":"brak ras akeTebs","IsDelete":false,"ChoiceQuestion":0,"TestCatalogId":1}
+{"Id":11,"QuestionText":"oop ras nishnavs","IsDelete":false,"ChoiceQuestion":0,"TestCatalogId":2}
+{"Id":12,"QuestionText":"klasi aris...","IsDelete":false,"ChoiceQuestion":0,"TestCatalogId":2}
+{"Id":13,"QuestionText":"klasis sheqmnili egzempliaria...","IsDelete":false,"ChoiceQuestion":0,"TestCatalogId":2}
+{"Id":14,"QuestionText":"konstruqtori idzaxeba...","IsDelete":false,"ChoiceQuestion":0,"TestCatalogId":2}
+{"Id":15,"QuestionText":"this agnishnavs","IsDelete":false,"ChoiceQuestion":0,"TestCatalogId":2}
+{"Id":16,"QuestionText":"memkvidreoba aris...","IsDelete":false,"ChoiceQuestion":0,"TestCatalogId":2}
+{"Id":17,"QuestionText":"inkafsulacia dziritadad gamoikeneba","IsDelete":false,"ChoiceQuestion":0,"TestCatalogId":2}
+{"Id":18,"QuestionText":"virtual gamoikeneba","IsDelete":false,"ChoiceQuestion":0,"TestCatalogId":2}
+{"Id":19,"QuestionText":"overaidi mushaobs","IsDelete":false,"ChoiceQuestion":0,"TestCatalogId":2}
+{"Id":20,"QuestionText":"interfeisi iqmneba sitkvit","IsDelete":false,"ChoiceQuestion":0,"TestCatalogId":2}
+{"Id":21,"QuestionText":"ert klas Seudzlia ramdenime interfeisis ganxorcieleba?","IsDelete":false,"ChoiceQuestion":0,"TestCatalogId":2}
+{"Id":22,"QuestionText":"abstract class sheidzleba sheicavdes","IsDelete":false,"ChoiceQuestion":0,"TestCatalogId":2}
+{"Id":23,"QuestionText":"propert-is get ras aketebs","IsDelete":false,"ChoiceQuestion":0,"TestCatalogId":2}
+{"Id":24,"QuestionText":"private cevrze cvdoma aqvs...","IsDelete":false,"ChoiceQuestion":0,"TestCatalogId":2}
+{"Id":25,"QuestionText":"Polymorphism nishnavs","IsDelete":false,"ChoiceQuestion":0,"TestCatalogId":2}

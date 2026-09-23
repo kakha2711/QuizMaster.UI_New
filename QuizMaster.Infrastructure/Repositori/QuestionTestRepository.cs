@@ -10,6 +10,9 @@ namespace QuizMaster.Infrastructure.Repositori
     {
         private readonly string questionTestPath = "C:\\Users\\Kakha\\source\\repos\\QuizMaster.UI\\QuizMaster.Infrastructure\\Data\\QuestionTest.txt";
         private readonly string testCatalogPath = "C:\\Users\\Kakha\\source\\repos\\QuizMaster.UI\\QuizMaster.Infrastructure\\Data\\TestCatalog.txt";
+        private readonly string answerPath = "C:\\Users\\Kakha\\source\\repos\\QuizMaster.UI\\QuizMaster.Infrastructure\\Data\\Answer.txt";
+        private readonly string testResult = "C:\\Users\\Kakha\\source\\repos\\QuizMaster.UI\\QuizMaster.Infrastructure\\Data\\StudentsTestResultFile.txt";
+
 
         public Task<List<TestCatalog>> GetAllTestsCatalog()
         {
@@ -40,7 +43,6 @@ namespace QuizMaster.Infrastructure.Repositori
             return Task.FromResult(testCatalogById);
         }
 
-       
         public Task<string> AddTestCatalog(TestCatalog testCatalog)
         {
             if(testCatalog == null)
@@ -105,6 +107,7 @@ namespace QuizMaster.Infrastructure.Repositori
 
             return Task.FromResult(result);
         }
+
         public async Task<string> DeleteTestCatalog(TestCatalog testCatalog)
         {
             if (testCatalog == null)
@@ -167,41 +170,94 @@ namespace QuizMaster.Infrastructure.Repositori
 
             List<QuestionTest> questionTest = new List<QuestionTest>();
 
-            foreach (var item in question)
-            {
-                if (item.TestCatalog.Id == testCatalogId)
-                {
-                    questionTest.Add(item);
-                }
-            }
+            questionTest = question.FindAll(x => x.Id == testCatalogId);
+
 
             return await Task.FromResult(questionTest);
         }
-        public Task<string> AddQuestionTest(QuestionTest questionTest)
+
+        public Task<List<AnswerTest>> GetAllAnswer()
+        {
+            List<AnswerTest> answerTests = new List<AnswerTest>();
+
+            string[] answer = File.ReadAllLines(answerPath);
+
+            foreach (var item in answer)
+            {
+                AnswerTest? answerTest  = JsonSerializer.Deserialize<AnswerTest>(item);
+
+                if(answerTest != null || !answerTest.isDelete)
+                    answerTests.Add(answerTest);
+            }
+
+            return Task.FromResult(answerTests);
+        }
+
+        public async Task<AnswerTest[]> GetAnswerById(int id)
+        {
+            if (id <= 0) throw new ObjectEmptyException("The ID is zero or less.");
+
+            AnswerTest[] answer =  GetAllAnswer().Result.FindAll(x=>x.Id == id).ToArray();
+
+            return answer;
+        }
+
+        public Task<string> AddQuestionTest(QuestionTest questionTest, AnswerTest[] answerTests)
         {
             string result;
 
-            if(questionTest == null)
+            if(answerTests.Length <= 0)
+                throw new ObjectEmptyException("AnswerTests test is null");
+
+            if (questionTest == null)
                 throw new ObjectEmptyException("Question test is null");
 
-            var questionTests = GetAllQuestions().Result;
+            List<QuestionTest> questionTests = GetAllQuestions().Result;
 
-            int oldCount = questionTests.Count;
+            List<AnswerTest> answer = GetAllAnswer().Result;
+
+            int oldCountQuestion = questionTests.Count;
+
+            int oldCountAswer = answer.Count;
+
+            var tt = answer.Count > 0;
 
             int questionTestsId = questionTests.Count > 0 ? questionTests.Max(x => x.Id) + 1 : 1;
+
+            int answerTestsId = answer.Count > 0 ? answer.Max(x => x.Id) + 1 : 1;
+
 
             questionTest.Id = questionTestsId;
 
             string serializedQuestionTest = JsonSerializer.Serialize(questionTest);
 
-            if (questionTests.Count == 0)
+            if (questionTestsId == 1)
                 File.AppendAllText(questionTestPath, serializedQuestionTest);
             else
                 File.AppendAllText(questionTestPath, Environment.NewLine + serializedQuestionTest);
-            
-            int newCount = GetAllQuestions().Result.Count;
 
-            result = newCount > oldCount ? "Question test added successfully" : "Failed to add question test";
+            
+            foreach (var item in answerTests)
+            {
+                item.Id = answerTestsId;
+                item.QuestionTestId = questionTestsId;
+
+                string serializedAnswer = JsonSerializer.Serialize(item);
+
+                if (answerTestsId == 1)
+                    File.AppendAllText(answerPath, serializedAnswer);
+                else
+                    File.AppendAllText(answerPath, Environment.NewLine + serializedAnswer);
+
+                answerTestsId++;
+            }
+
+
+            int newCountQuestion = GetAllQuestions().Result.Count;
+            int newCountAswer = GetAllAnswer().Result.Count;
+
+
+            result = newCountQuestion > oldCountQuestion && newCountAswer> oldCountAswer ? "Question test added successfully" : "Failed to add question test";
 
             return Task.FromResult(result);
         }
@@ -269,6 +325,116 @@ namespace QuizMaster.Infrastructure.Repositori
                 result = "Failed to delete question test";
 
             return await Task.FromResult(result);
+        }
+
+        //string testCatalog
+        public async Task<List<QuestionTest>> GetQuiziQuestion(int id)
+        {
+          
+            if (id <= 0)
+                throw new ObjectEmptyException("testCatalog is null");
+
+            //int testCatalogId = testCatalog1.Id;
+
+            List<QuestionTest> question = GetAllQuestions().Result.FindAll(q=> q.TestCatalogId == id && !q.IsDelete);
+
+            Random random = new Random();
+
+            List<QuestionTest> questionTests = question.OrderBy(x => random.Next()).Take(5).ToList();
+
+
+
+
+            //List<QuestionTest> selectedQuestionTests = new List<QuestionTest>();
+            //List<int> usedIndexes = new List<int>();
+
+            //while (selectedQuestionTests.Count < 5)
+            //{
+            //    int index = random.Next(0, question.Count);
+
+            //    if (!usedIndexes.Contains(index))
+            //    {
+            //        usedIndexes.Add(index);
+            //        selectedQuestionTests.Add(selectedQuestionTests[index]);
+            //    }
+            //}
+
+
+            return await Task.FromResult(questionTests);
+        }
+
+        public async Task<List<AnswerTest>> GetQuestionAnswer(int id)
+        {
+            if (id <= 0)
+                throw new ObjectEmptyException("Question is null");
+
+            Random random = new Random();
+
+            List<AnswerTest> answerTests = GetAllAnswer()
+                                            .Result
+                                            .FindAll(x => x.Id == id && !x.isDelete)
+                                            .OrderBy(x => random.Next())
+                                            .ToList();
+
+
+            //List<AnswerTest> answerTests = answerTests.OrderBy(x => random.Next()).ToList();
+
+
+            return await Task.FromResult(answerTests);
+        }
+
+
+
+        public async Task<List<StudentsTestResult>> GetStudentsTestResult()
+        {
+            List<StudentsTestResult> studentsTestResults = new List<StudentsTestResult>();
+
+            string[] lines = File.ReadAllLines(testResult);
+
+            foreach (string line in lines)
+            {
+                StudentsTestResult? studentTestResult = JsonSerializer.Deserialize<StudentsTestResult>(line);
+
+                if(studentTestResult != null)
+                    studentsTestResults.Add(studentTestResult);
+
+            }
+
+
+            return await Task.FromResult(studentsTestResults);
+        }
+
+
+
+        public async Task AddQuestionAnswer(int studentId, int testCatalogId, int[] questionId, int[] answerId, bool[] isCorrect)
+        {
+
+            if (studentId <= 0 || testCatalogId <=0 ||questionId.Length <=0 || answerId.Length <=0 || isCorrect.Length <=0)
+                throw new ObjectEmptyException("One of the IDs is empty.");
+
+            StudentsTestResult studentsTestResult = new StudentsTestResult();
+
+
+            List<StudentsTestResult> studentResult = await GetStudentsTestResult();
+
+            studentsTestResult.Id = studentResult.Count > 0 ? studentResult.Max(x => x.Id) + 1 : 1;
+            studentsTestResult.TestCatalogId = testCatalogId;
+            studentsTestResult.StudentId = studentId;
+
+            for (int i = 0; i < questionId.Length; i++)
+            {
+                studentsTestResult.QuestionTestId = questionId[i];
+                studentsTestResult.AnswerId = answerId[i];
+                studentsTestResult.IsCorrect = isCorrect[i];
+
+                string testResultJson = JsonSerializer.Serialize(studentsTestResult);
+
+                if (studentResult.Count <= 0)
+                    File.AppendAllText(testResult, testResultJson);
+                else
+                    File.AppendAllText(testResult, Environment.NewLine + testResultJson);
+            }
+
         }
     }
 }

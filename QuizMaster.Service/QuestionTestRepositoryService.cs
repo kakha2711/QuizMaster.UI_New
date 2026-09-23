@@ -29,18 +29,16 @@ namespace QuizMaster.Service
         {
             try
             {
-                var tt =await _questionTestRepository.AddTestCatalog(testCatalog);
+                string result =await _questionTestRepository.AddTestCatalog(testCatalog);
 
-                if(tt.Contains("success"))
-                    ColloringConsole.Success(tt);
+                if(result.Contains("success"))
+                    ColloringConsole.Success(result);
                 else
-                    ColloringConsole.Error(tt);
+                    ColloringConsole.Error(result);
             }
             catch (Exception ex)
             {
-                // Handle the exception (e.g., log it, rethrow it, etc.)
-                //throw new Exception("An error occurred while adding the test catalog.", ex);
-
+             
                 if(ex.Message.Contains("success"))
                     ColloringConsole.Success(ex.Message);
                 else
@@ -68,9 +66,9 @@ namespace QuizMaster.Service
             return await _questionTestRepository.GetAllQuestions();
         }
 
-        public void AddQuestionTest(QuestionTest questionTest)
+        public void AddQuestionTest(QuestionTest questionTest, AnswerTest[] answerTests)
         {
-            _questionTestRepository.AddQuestionTest(questionTest);
+            _questionTestRepository.AddQuestionTest(questionTest, answerTests);
         }
 
         public void UpdateQuestionTest(QuestionTest questionTest)

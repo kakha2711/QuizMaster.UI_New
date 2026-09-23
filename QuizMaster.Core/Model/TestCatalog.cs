@@ -8,6 +8,7 @@ namespace QuizMaster.Core.Model
         public string? Topic { get; set; }
         public double QuestionsNumber { get; set; }
         public double MaximumScore { get; set; }
+        public double EarnedScore { get; set; }
         public byte DateTime { get; set; }
         public double PassingPercentage { get; set; }
         public bool IsDelete { get; set; } = false;
@@ -15,15 +16,16 @@ namespace QuizMaster.Core.Model
 
         public override bool Equals(object? obj)
         {
-            return obj is TestCatalog catalog &&
-                   Id == catalog.Id &&
-                   TestTitle == catalog.TestTitle &&
-                   Topic == catalog.Topic &&
-                   QuestionsNumber == catalog.QuestionsNumber &&
-                   MaximumScore == catalog.MaximumScore &&
-                   DateTime == catalog.DateTime &&
-                   PassingPercentage == catalog.PassingPercentage &&
-                   IsDelete == catalog.IsDelete;
+            return obj is TestCatalog catalog
+                && Id == catalog.Id
+                && TestTitle == catalog.TestTitle
+                && Topic == catalog.Topic
+                && QuestionsNumber == catalog.QuestionsNumber
+                && MaximumScore == catalog.MaximumScore
+                && DateTime == catalog.DateTime
+                && PassingPercentage == catalog.PassingPercentage
+                && IsDelete == catalog.IsDelete
+                && EarnedScore == catalog.EarnedScore;
         }
 
         public override int GetHashCode()
@@ -33,7 +35,7 @@ namespace QuizMaster.Core.Model
 
         public override string? ToString()
         {
-            return $" Id: {Id},\n TestTitle: {TestTitle},\n Topic: {Topic},\n QuestionsNumber: {QuestionsNumber},\n MaximumScore: {MaximumScore},\n DateTime: {DateTime},\n PassingPercentage: {PassingPercentage}\n";
+            return $" Id: {Id},\n TestTitle: {TestTitle},\n Topic: {Topic},\n QuestionsNumber: {QuestionsNumber},\n MaximumScore: {MaximumScore},\n EarnedScore: {EarnedScore},\n DateTime: {DateTime},\n PassingPercentage: {PassingPercentage}\n";
 
         }
     }
