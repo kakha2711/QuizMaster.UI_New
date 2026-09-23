@@ -261,7 +261,7 @@ namespace QuizMaster.UI
                     int num = 0;
                     int testQuestioncount = 0;
 
-                    while (num < testQuestioncount)
+                    while (num <= testQuestioncount)
                     {
 
                         Console.Write($"Enter {num + 1} Question: ");
