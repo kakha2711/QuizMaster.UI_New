@@ -343,25 +343,10 @@ namespace QuizMaster.Infrastructure.Repositori
             List<QuestionTest> questionTests = question.OrderBy(x => random.Next()).Take(5).ToList();
 
 
-
-
-            //List<QuestionTest> selectedQuestionTests = new List<QuestionTest>();
-            //List<int> usedIndexes = new List<int>();
-
-            //while (selectedQuestionTests.Count < 5)
-            //{
-            //    int index = random.Next(0, question.Count);
-
-            //    if (!usedIndexes.Contains(index))
-            //    {
-            //        usedIndexes.Add(index);
-            //        selectedQuestionTests.Add(selectedQuestionTests[index]);
-            //    }
-            //}
-
-
             return await Task.FromResult(questionTests);
         }
+
+
 
         public async Task<List<AnswerTest>> GetQuestionAnswer(int id)
         {
@@ -372,15 +357,13 @@ namespace QuizMaster.Infrastructure.Repositori
 
             List<AnswerTest> answerTests = GetAllAnswer()
                                             .Result
-                                            .FindAll(x => x.Id == id && !x.isDelete)
-                                            .OrderBy(x => random.Next())
-                                            .ToList();
+                                            .FindAll(x => x.QuestionTestId == id && !x.isDelete);
+                                            /*.OrderBy(x => random.Next())
+                                            .ToList();*/
 
+            List<AnswerTest> answerNew = answerTests.OrderBy(x => random.Next()).ToList();
 
-            //List<AnswerTest> answerTests = answerTests.OrderBy(x => random.Next()).ToList();
-
-
-            return await Task.FromResult(answerTests);
+            return await Task.FromResult(answerNew);
         }
 
 

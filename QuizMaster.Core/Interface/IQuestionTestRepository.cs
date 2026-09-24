@@ -20,5 +20,12 @@ namespace QuizMaster.Core.Interface
         Task<string> AddQuestionTest(QuestionTest questionTest, AnswerTest[] answerTests);
         Task<string> UpdateQuestionTest(QuestionTest questionTest);
         Task<string> DeleteQuestionTest(QuestionTest questionTest);
+
+
+        Task<List<QuestionTest>> GetQuiziQuestion(int id);
+        Task<List<AnswerTest>> GetQuestionAnswer(int id);
+        Task<List<StudentsTestResult>> GetStudentsTestResult();
+        Task AddQuestionAnswer(int studentId, int testCatalogId, int[] questionId, int[] answerId, bool[] isCorrect);
+
     }
 }

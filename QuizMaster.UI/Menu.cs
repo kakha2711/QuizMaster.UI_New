@@ -105,14 +105,7 @@ namespace QuizMaster.UI
                     person.Gender = Enum.Parse<Gender>(Console.ReadLine(), true);
 
 
-                    //var features = AnsiConsole.Prompt(
-                    //    new MultiSelectionPrompt<string>()
-                    //    .Title("Select [green]features[/] to enable:")
-                    //    .AddChoices("Female", "Male"));
-
-                    //AnsiConsole.MarkupLine($"Enabled: [blue]{string.Join(", ", features)}[/]");
-
-                    //person.Gender = features;
+                  
 
                     person.Role = (Role)Enum.Parse(typeof(Role), personRole, true);
 
@@ -151,7 +144,7 @@ namespace QuizMaster.UI
 
                     if (person.Role.ToString() == "Student")
                     {
-                        await StudentEnvironment(personRole, person as Student);
+                        await StudentEnvironment(personRole, _questionTestRepositoryService, _studentService, person as Student);
                     }
 
                     break;
@@ -245,11 +238,11 @@ namespace QuizMaster.UI
                     }
 
                     break;
-                //case "4":
+                case "4":
 
-                //    break;
-                //case "5":
-                //    break;
+                    break;
+                case "5":
+                    break;
                 case "6":
 
                     QuestionTest question = new QuestionTest();
@@ -345,20 +338,84 @@ namespace QuizMaster.UI
         }
 
 
-        static async Task StudentEnvironment(string role, Student student)
+        static async Task StudentEnvironment(string role, QuestionTestRepositoryService _questionTestRepositoryService, StudentService _studentService, Student student)
         {
-            //Console.WriteLine("1. Create a new test");
-            Console.WriteLine("2. View all tests");
-            Console.WriteLine("3. Start a test");
-            //Console.WriteLine("4. Delete a test");
+            Console.WriteLine("Welcome to the Student Environment!");
+            Console.WriteLine("Please select an option:");
 
-            //Console.WriteLine("1. Create a new question");
-            //Console.WriteLine("2. View all questions");
-            //Console.WriteLine("3. Edit a question");
-            //Console.WriteLine("4. Delete a question");
+          
 
-            Console.WriteLine("1. Update leqturer");
-            Console.WriteLine("2. delete lecturer");
+            string? input = AnsiConsole.Prompt(
+                                 new SelectionPrompt<string>()
+                                .Title("Enter IsCorrect:")
+                                .AddChoices("View all tests", "Start a test"));
+
+            AnsiConsole.MarkupLine($"You selected: [green]{input}[/]");
+
+            List<TestCatalog> testCatalogs = await _questionTestRepositoryService.GetAllTestsCatalog();
+
+            List<QuestionTest> questionTests = new List<QuestionTest>();
+
+            List<AnswerTest> answerTests = new List<AnswerTest>();
+
+
+
+            switch (input)
+            {
+                case "View all tests":
+
+                    foreach (var item in testCatalogs)
+                    {
+                        Console.WriteLine($"{item.Id}: {item.TestTitle}: {item.MaximumScore}");
+                    }
+
+                    break;
+                case "Start a test":
+
+                    var selectedQuestion = AnsiConsole.Prompt(
+                               new SelectionPrompt<TestCatalog>()
+                                   .Title("Select a [green]book[/]")
+                                   .PageSize(10)
+                                   .UseConverter(Test => $"{Test.Id} by {Test.TestTitle}")
+                                   .AddChoices(testCatalogs)).Id;
+
+                    AnsiConsole.MarkupLine($"You selected: [yellow]{selectedQuestion}[/]");
+
+                    List<QuestionTest> questions = await _questionTestRepositoryService.GetQuestionQuizi(selectedQuestion);
+
+                    //პასუხები არასწორედ ბრუნდება
+
+                    foreach (var item in questions)
+                    {
+                        questionTests.Add(item);
+
+                        var tt = item.Id;
+
+                        List<AnswerTest> answers = await _questionTestRepositoryService.GetAnswerQuizi(item.Id);
+                        answerTests.AddRange(answers);
+
+                    }
+
+                    foreach (var item in questionTests)
+                    {
+                        Console.WriteLine($"{item.Id}: {item.QuestionText}");
+
+                        var answersForQuestion = answerTests.Where(a => a.QuestionTestId == item.Id).ToList();
+
+                        var answerText = AnsiConsole.Prompt(
+                               new SelectionPrompt<AnswerTest>()
+                                   .Title("Select an [green]answer[/]")
+                                   .PageSize(10)
+                                   .UseConverter(Answer => $"{Answer.Id}: {Answer.Answer}")
+                                   .AddChoices(answersForQuestion));
+
+                        AnsiConsole.MarkupLine($"You selected: [yellow]{answerText}[/]");
+                    }
+
+                    //ეს არის გასაგრძელებელი არ არის დამთავრებული
+
+                    break;
+            }
         }
     }
 }

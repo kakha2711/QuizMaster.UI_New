@@ -77,5 +77,33 @@ namespace QuizMaster.Service
         }
 
 
+
+
+
+        public async Task<List<QuestionTest>> GetQuestionQuizi(int id)
+        {
+            List<QuestionTest> questionTest = await _questionTestRepository.GetQuiziQuestion(id);
+
+            return await Task.FromResult(questionTest);
+        }
+
+        public async Task<List<AnswerTest>> GetAnswerQuizi(int id)
+        {
+            List<AnswerTest> answerTest = await _questionTestRepository.GetQuestionAnswer(id);
+            return await Task.FromResult(answerTest);
+        }
+
+
+        public async Task<List<StudentsTestResult>> GetStudentsTestResult()
+        {
+            List<StudentsTestResult> studentsTestResults = await _questionTestRepository.GetStudentsTestResult();
+            return await Task.FromResult(studentsTestResults);
+        }
+
+        public async Task AddQuestionAnswer(int studentId, int testCatalogId, int[] questionId, int[] answerId, bool[] isCorrect)
+        {
+            await _questionTestRepository.AddQuestionAnswer(studentId, testCatalogId, questionId, answerId, isCorrect);
+        }
+
     }
 }
