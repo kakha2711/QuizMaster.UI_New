@@ -341,7 +341,8 @@ namespace QuizMaster.Infrastructure.Repositori
 
             Random random = new Random();
 
-            List<QuestionTest> questionTests = question.OrderBy(x => random.Next()).Take(5).ToList();
+            //List<QuestionTest> questionTests = question.OrderBy(x => random.Next()).Take(5).ToList();
+            List<QuestionTest> questionTests = question.OrderBy(x => random.Next()).ToList();
 
 
             return await Task.FromResult(questionTests);
@@ -394,6 +395,8 @@ namespace QuizMaster.Infrastructure.Repositori
         public async Task AddQuestionAnswer(int studentId, int testCatalogId, int questionId, int[] answerId, int[] isCorrect)
         {
 
+            int countScore = 0;
+
             if (studentId <= 0 || testCatalogId <=0 ||questionId <=0 || answerId.Length <=0 || isCorrect.Length <=0)
                 throw new ObjectEmptyException("One of the IDs is empty.");
 
@@ -427,7 +430,18 @@ namespace QuizMaster.Infrastructure.Repositori
                 else
                     File.AppendAllText(testResult, Environment.NewLine + testResultJson);
 
+
+                
+                if (CheckAnswer(answerId, isCorrect).Result)
+                {
+                    countScore++;
+                }
             }
+
+            TestCatalog testCatalog =GetTestCatalogById(testCatalogId).Result;
+
+            var newScore = testCatalog.MaximumScore/testCatalog.QuestionsNumber * countScore;
+
 
         }
 
@@ -452,6 +466,20 @@ namespace QuizMaster.Infrastructure.Repositori
         { 
          throw new NotImplementedException();
 
+        }
+
+
+        public async Task<bool> CheckAnswer(int[] answerId, int[] isCorrect)
+        {
+
+            foreach (var item in answerId)
+            {
+                if(isCorrect.Contains(item))
+                    return await Task.FromResult(true);
+
+            }
+
+            return await Task.FromResult(false);
         }
     }
 }

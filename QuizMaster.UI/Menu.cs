@@ -23,7 +23,7 @@ namespace QuizMaster.UI
             try
             {
 
-                await _questionTestRepositoryService.GetLiderBoard();
+                //await _questionTestRepositoryService.GetLiderBoard();
                 string personRole = Role();
 
                 RegisterRole(personRole, _questionTestRepositoryService, _studentService);
