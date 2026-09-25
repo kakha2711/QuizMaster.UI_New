@@ -327,6 +327,7 @@ namespace QuizMaster.Infrastructure.Repositori
             return await Task.FromResult(result);
         }
 
+
         //string testCatalog
         public async Task<List<QuestionTest>> GetQuiziQuestion(int id)
         {
@@ -389,35 +390,67 @@ namespace QuizMaster.Infrastructure.Repositori
 
 
 
-        public async Task AddQuestionAnswer(int studentId, int testCatalogId, int[] questionId, int[] answerId, bool[] isCorrect)
+
+        public async Task AddQuestionAnswer(int studentId, int testCatalogId, int questionId, int[] answerId, int[] isCorrect)
         {
 
-            if (studentId <= 0 || testCatalogId <=0 ||questionId.Length <=0 || answerId.Length <=0 || isCorrect.Length <=0)
+            if (studentId <= 0 || testCatalogId <=0 ||questionId <=0 || answerId.Length <=0 || isCorrect.Length <=0)
                 throw new ObjectEmptyException("One of the IDs is empty.");
 
-            StudentsTestResult studentsTestResult = new StudentsTestResult();
-
-
             List<StudentsTestResult> studentResult = await GetStudentsTestResult();
+
+            StudentsTestResult studentsTestResult = new StudentsTestResult();
 
             studentsTestResult.Id = studentResult.Count > 0 ? studentResult.Max(x => x.Id) + 1 : 1;
             studentsTestResult.TestCatalogId = testCatalogId;
             studentsTestResult.StudentId = studentId;
+            studentsTestResult.QuestionTestId = questionId;
 
-            for (int i = 0; i < questionId.Length; i++)
+            int count = answerId.Length > isCorrect.Length ? isCorrect.Length : answerId.Length;
+
+            for (int i = 0; i < count; i++)
             {
-                studentsTestResult.QuestionTestId = questionId[i];
+                studentResult = await GetStudentsTestResult();
+
+                studentsTestResult.Id = studentResult.Count > 0 ? studentResult.Max(x => x.Id) + 1 : 1;
+                
                 studentsTestResult.AnswerId = answerId[i];
-                studentsTestResult.IsCorrect = isCorrect[i];
+                studentsTestResult.IsCorrectId = isCorrect[i];
+
 
                 string testResultJson = JsonSerializer.Serialize(studentsTestResult);
+
+                //string tt = testResultJson.Insert(testResultJson.Length - 2, ", \"CorectAnswerCount\":" + 3.ToString() + "");
 
                 if (studentResult.Count <= 0)
                     File.AppendAllText(testResult, testResultJson);
                 else
                     File.AppendAllText(testResult, Environment.NewLine + testResultJson);
+
             }
 
+        }
+
+        public async Task<List<StudentsTestResult>> GetLiderBoard()
+        {
+            List<StudentsTestResult> studentsTestResults = GetStudentsTestResult().Result;
+            
+            List<Student> students = new List<Student>();
+
+            
+
+            //foreach (var item in studentsTestResults)
+            //{
+            //   var student = _
+            //}
+
+            return await Task.FromResult(new List<StudentsTestResult>());
+        }
+
+
+        public async Task AddLiderboard()
+        { 
+         throw new NotImplementedException();
 
         }
     }

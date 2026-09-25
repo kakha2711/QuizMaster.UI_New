@@ -21,9 +21,7 @@ namespace QuizMaster.Core.Model
         
         public override string? ToString()
         {
-            //, VerificationCode: { VerificationCode}
-            //return $"Id: {Id}, Question: {Question}, Answer1: {Answer1}, Answer2: {Answer2}, Answer3: {Answer3}, Answer4: {Answer4}, choiceQuestion: {ChoiceQuestion}";
-
+         
             return $"Id: {Id}, Question: {QuestionText}, choiceQuestion: {ChoiceQuestion}";
         }
 

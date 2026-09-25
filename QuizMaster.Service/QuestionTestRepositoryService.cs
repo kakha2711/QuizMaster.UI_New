@@ -29,17 +29,17 @@ namespace QuizMaster.Service
         {
             try
             {
-                string result =await _questionTestRepository.AddTestCatalog(testCatalog);
+                string result = await _questionTestRepository.AddTestCatalog(testCatalog);
 
-                if(result.Contains("success"))
+                if (result.Contains("success"))
                     ColloringConsole.Success(result);
                 else
                     ColloringConsole.Error(result);
             }
             catch (Exception ex)
             {
-             
-                if(ex.Message.Contains("success"))
+
+                if (ex.Message.Contains("success"))
                     ColloringConsole.Success(ex.Message);
                 else
                     ColloringConsole.Error(ex.Message);
@@ -100,10 +100,15 @@ namespace QuizMaster.Service
             return await Task.FromResult(studentsTestResults);
         }
 
-        public async Task AddQuestionAnswer(int studentId, int testCatalogId, int[] questionId, int[] answerId, bool[] isCorrect)
+        public async Task AddQuestionAnswer(int studentId, int testCatalogId, int questionId, int[] answerId, int[] isCorrect)
         {
             await _questionTestRepository.AddQuestionAnswer(studentId, testCatalogId, questionId, answerId, isCorrect);
         }
 
+        public async Task<List<StudentsTestResult>> GetLiderBoard()
+        {
+            //List<StudentsTestResult> studentProgress = await _questionTestRepository.GetLiderBoard();
+            return await _questionTestRepository.GetLiderBoard();
+        }
     }
 }

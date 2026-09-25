@@ -8,7 +8,7 @@
         public int TestCatalogId { get; set; }
         public int QuestionTestId { get; set; }
         public int AnswerId { get; set; }
-        public bool IsCorrect { get; set; }
+        public int IsCorrectId { get; set; }
 
         public bool IsDelete { get; set; } = false;
 

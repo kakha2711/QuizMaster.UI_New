@@ -22,6 +22,8 @@ namespace QuizMaster.UI
         {
             try
             {
+
+                await _questionTestRepositoryService.GetLiderBoard();
                 string personRole = Role();
 
                 RegisterRole(personRole, _questionTestRepositoryService, _studentService);
@@ -41,44 +43,34 @@ namespace QuizMaster.UI
 
         static string Role()
         {
-            Console.WriteLine("Selected role");
-            Console.WriteLine("1: Lecturer");
-            Console.WriteLine("2: Student");
 
-            string lecturerStudent = Console.ReadLine();
-            string personRole = string.Empty;
+            var personRole = AnsiConsole.Prompt(
+                             new SelectionPrompt<string>()
+                            .Title("Selected role:")
+                            .AddChoices("Lecturer", "Student"));
 
-            switch (lecturerStudent)
-            {
-                case "1":
-                    personRole = "Lecturer";
-                    break;
-                case "2":
-                    personRole = "Student";
-                    break;
-            }
+            AnsiConsole.MarkupLine($"You selected: [green]{personRole}[/]");
+
             return personRole;
         }
 
         static async Task RegisterRole(string personRole, QuestionTestRepositoryService _questionTestRepositoryService, StudentService _studentService)
         {
-            Console.WriteLine("Do you want to register or log in?");
-            Console.WriteLine("1: register");
-            Console.WriteLine("2: log in");
 
-            string registerLogIn = Console.ReadLine().ToLower();
 
-            if (registerLogIn != "1" && registerLogIn != "2")
-            {
-                ColloringConsole.Error("Invalid input. Please enter 1 or 2.");
-                return;
-            }
+            var registerLogIn = AnsiConsole.Prompt(
+                             new SelectionPrompt<string>()
+                            .Title("Selected register or log in:")
+                            .AddChoices("register", "log in"));
+
+            AnsiConsole.MarkupLine($"You selected: [green]{registerLogIn}[/]");
+
 
             Person person = new Person();
 
             switch (registerLogIn)
             {
-                case "1":
+                case "register":
 
                     Console.Write("Enter FirsName: ");
                     person.FirsName = Console.ReadLine();
@@ -105,7 +97,7 @@ namespace QuizMaster.UI
                     person.Gender = Enum.Parse<Gender>(Console.ReadLine(), true);
 
 
-                  
+
 
                     person.Role = (Role)Enum.Parse(typeof(Role), personRole, true);
 
@@ -113,7 +105,7 @@ namespace QuizMaster.UI
 
                     break;
 
-                case "2":
+                case "log in":
 
                     Console.Write("Enter Username: ");
                     string? userName = Console.ReadLine();
@@ -217,10 +209,6 @@ namespace QuizMaster.UI
                     string? dateTime = Console.ReadLine();
                     questionTest.DateTime = byte.Parse(dateTime);
 
-                    //Console.WriteLine("Enter PassingPercentage");
-                    //string? passingPercentage = Console.ReadLine();
-                    //questionTest.PassingPercentage = byte.Parse(PassingPercentage);
-
                     Console.WriteLine("Enter PassingPercentage");
                     string? passingPercentage = Console.ReadLine();
                     questionTest.PassingPercentage = byte.Parse(passingPercentage);
@@ -254,7 +242,7 @@ namespace QuizMaster.UI
                     int num = 0;
                     int testQuestioncount = 0;
 
-                    while (num <= testQuestioncount)
+                    while (num <= testQuestioncount - 1)
                     {
 
                         Console.Write($"Enter {num + 1} Question: ");
@@ -282,7 +270,7 @@ namespace QuizMaster.UI
 
                         AnsiConsole.MarkupLine($"You selected: [yellow]{selectedQuestion.TestTitle}[/]");
 
-                        int testQuestionId =  Convert.ToInt32(selectedQuestion.Id);
+                        int testQuestionId = Convert.ToInt32(selectedQuestion.Id);
 
                         question.TestCatalogId = testQuestionId;
 
@@ -313,9 +301,7 @@ namespace QuizMaster.UI
                         _questionTestRepositoryService.AddQuestionTest(question, answerTests.ToArray());
                         num++;
 
-                    } 
-
-                    //Console.Write("Enter question: ");
+                    }
 
                     break;
                 case "7":
@@ -330,11 +316,6 @@ namespace QuizMaster.UI
                     break;
             }
 
-
-
-
-
-
         }
 
 
@@ -343,7 +324,7 @@ namespace QuizMaster.UI
             Console.WriteLine("Welcome to the Student Environment!");
             Console.WriteLine("Please select an option:");
 
-          
+
 
             string? input = AnsiConsole.Prompt(
                                  new SelectionPrompt<string>()
@@ -372,29 +353,37 @@ namespace QuizMaster.UI
                     break;
                 case "Start a test":
 
-                    var selectedQuestion = AnsiConsole.Prompt(
+                    var selectedQuestionId = AnsiConsole.Prompt(
                                new SelectionPrompt<TestCatalog>()
                                    .Title("Select a [green]book[/]")
                                    .PageSize(10)
                                    .UseConverter(Test => $"{Test.Id} by {Test.TestTitle}")
                                    .AddChoices(testCatalogs)).Id;
 
-                    AnsiConsole.MarkupLine($"You selected: [yellow]{selectedQuestion}[/]");
+                    AnsiConsole.MarkupLine($"You selected: [yellow]{selectedQuestionId}[/]");
 
-                    List<QuestionTest> questions = await _questionTestRepositoryService.GetQuestionQuizi(selectedQuestion);
+                    List<QuestionTest> questions = await _questionTestRepositoryService.GetQuestionQuizi(selectedQuestionId);
 
-                    //პასუხები არასწორედ ბრუნდება
+                    int indexQuestion = 0;
+                    //int indexAnswer = 0;
+
+                    int[] questionTestArray = new int[questions.Count];
+                    List<int> answerTestArray = new List<int>();
+                    List<int> isCorectAnswer = new List<int>();
 
                     foreach (var item in questions)
                     {
                         questionTests.Add(item);
 
-                        var tt = item.Id;
-
                         List<AnswerTest> answers = await _questionTestRepositoryService.GetAnswerQuizi(item.Id);
                         answerTests.AddRange(answers);
 
+                        questionTestArray[indexQuestion] = item.Id;
+                        indexQuestion++;
                     }
+
+                    indexQuestion = 0;
+                    int selectedAnswerId = 0;
 
                     foreach (var item in questionTests)
                     {
@@ -402,14 +391,34 @@ namespace QuizMaster.UI
 
                         var answersForQuestion = answerTests.Where(a => a.QuestionTestId == item.Id).ToList();
 
-                        var answerText = AnsiConsole.Prompt(
-                               new SelectionPrompt<AnswerTest>()
-                                   .Title("Select an [green]answer[/]")
-                                   .PageSize(10)
-                                   .UseConverter(Answer => $"{Answer.Id}: {Answer.Answer}")
-                                   .AddChoices(answersForQuestion));
 
-                        AnsiConsole.MarkupLine($"You selected: [yellow]{answerText}[/]");
+                        List<string> selected = AnsiConsole.Prompt(
+                            new MultiSelectionPrompt<string>()
+                            .Title("Select [green]notification plugins[/] to install:")
+                            .AddChoices(answersForQuestion.Select(a => $"{a.Id}: {a.Answer}")));
+
+                        AnsiConsole.MarkupLine($"[blue]Installing {selected.Count} plugin(s)...[/]");
+
+                        
+                        foreach (var item1 in answersForQuestion)
+                        {
+                            if (item1.IsCorrect)
+                                isCorectAnswer.Add(item1.Id);
+                        }
+
+                        //if (selected.Count == 4)
+                        //{
+                        foreach (var item1 in selected)
+                        {
+                            answerTestArray.Add(Convert.ToInt32(item1.Split(':')[0]));
+                        }
+
+                        _questionTestRepositoryService
+                                .AddQuestionAnswer(student.Id, selectedQuestionId, item.Id, answerTestArray.ToArray(), isCorectAnswer.ToArray());
+
+                        answerTestArray.Clear();
+                        isCorectAnswer.Clear();
+
                     }
 
                     //ეს არის გასაგრძელებელი არ არის დამთავრებული
