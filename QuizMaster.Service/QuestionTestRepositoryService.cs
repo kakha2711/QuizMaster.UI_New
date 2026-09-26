@@ -105,9 +105,9 @@ namespace QuizMaster.Service
             await _questionTestRepository.AddQuestionAnswer(studentId, testCatalogId, questionId, answerId, isCorrect);
         }
 
-        public async Task<List<StudentsTestResult>> GetLiderBoard()
+        public async Task<List<StudentProgress>> GetLiderBoard()
         {
-            //List<StudentsTestResult> studentProgress = await _questionTestRepository.GetLiderBoard();
+
             return await _questionTestRepository.GetLiderBoard();
         }
     }

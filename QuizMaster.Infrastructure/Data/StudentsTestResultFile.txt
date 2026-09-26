@@ -1,15 +1,1 @@
-{"Id":1,"StudentId":1,"TestCatalogId":1,"QuestionTestId":3,"AnswerId":9,"IsCorrectId":10,"IsDelete":false}
-{"Id":2,"StudentId":1,"TestCatalogId":1,"QuestionTestId":10,"AnswerId":38,"IsCorrectId":38,"IsDelete":false}
-{"Id":3,"StudentId":1,"TestCatalogId":1,"QuestionTestId":10,"AnswerId":37,"IsCorrectId":37,"IsDelete":false}
-{"Id":4,"StudentId":1,"TestCatalogId":1,"QuestionTestId":10,"AnswerId":39,"IsCorrectId":39,"IsDelete":false}
-{"Id":5,"StudentId":1,"TestCatalogId":1,"QuestionTestId":8,"AnswerId":32,"IsCorrectId":29,"IsDelete":false}
-{"Id":6,"StudentId":1,"TestCatalogId":1,"QuestionTestId":8,"AnswerId":29,"IsCorrectId":30,"IsDelete":false}
-{"Id":7,"StudentId":1,"TestCatalogId":1,"QuestionTestId":9,"AnswerId":36,"IsCorrectId":34,"IsDelete":false}
-{"Id":8,"StudentId":1,"TestCatalogId":1,"QuestionTestId":4,"AnswerId":16,"IsCorrectId":15,"IsDelete":false}
-{"Id":9,"StudentId":1,"TestCatalogId":1,"QuestionTestId":10,"AnswerId":39,"IsCorrectId":39,"IsDelete":false}
-{"Id":10,"StudentId":1,"TestCatalogId":1,"QuestionTestId":10,"AnswerId":38,"IsCorrectId":38,"IsDelete":false}
-{"Id":11,"StudentId":1,"TestCatalogId":1,"QuestionTestId":10,"AnswerId":37,"IsCorrectId":37,"IsDelete":false}
-{"Id":12,"StudentId":1,"TestCatalogId":1,"QuestionTestId":3,"AnswerId":12,"IsCorrectId":10,"IsDelete":false}
-{"Id":13,"StudentId":1,"TestCatalogId":1,"QuestionTestId":10,"AnswerId":39,"IsCorrectId":39,"IsDelete":false}
-{"Id":14,"StudentId":1,"TestCatalogId":1,"QuestionTestId":10,"AnswerId":37,"IsCorrectId":37,"IsDelete":false}
-{"Id":15,"StudentId":1,"TestCatalogId":1,"QuestionTestId":10,"AnswerId":40,"IsCorrectId":38,"IsDelete":false}
+{"Id":1,"StudentId":1,"TestCatalogId":1,"QuestionTestId":9,"AnswerId":35,"IsCorrectId":34,"IsDelete":false}

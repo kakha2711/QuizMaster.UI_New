@@ -11,7 +11,8 @@ namespace QuizMaster.Infrastructure.Repositori
         private readonly string questionTestPath = "C:\\Users\\Kakha\\source\\repos\\QuizMaster.UI\\QuizMaster.Infrastructure\\Data\\QuestionTest.txt";
         private readonly string testCatalogPath = "C:\\Users\\Kakha\\source\\repos\\QuizMaster.UI\\QuizMaster.Infrastructure\\Data\\TestCatalog.txt";
         private readonly string answerPath = "C:\\Users\\Kakha\\source\\repos\\QuizMaster.UI\\QuizMaster.Infrastructure\\Data\\Answer.txt";
-        private readonly string testResult = "C:\\Users\\Kakha\\source\\repos\\QuizMaster.UI\\QuizMaster.Infrastructure\\Data\\StudentsTestResultFile.txt";
+        private readonly string testPath = "C:\\Users\\Kakha\\source\\repos\\QuizMaster.UI\\QuizMaster.Infrastructure\\Data\\StudentsTestResultFile.txt";
+        private readonly string studentProgressPasth = "C:\\Users\\Kakha\\source\\repos\\QuizMaster.UI\\QuizMaster.Infrastructure\\Data\\StudentProgress.txt";
 
 
         public Task<List<TestCatalog>> GetAllTestsCatalog()
@@ -24,7 +25,7 @@ namespace QuizMaster.Infrastructure.Repositori
             {
                 TestCatalog? testCatalog = JsonSerializer.Deserialize<TestCatalog>(line);
 
-                if(testCatalog != null && !testCatalog.IsDelete)
+                if (testCatalog != null && !testCatalog.IsDelete)
                     testCatalogs.Add(testCatalog);
             }
 
@@ -45,7 +46,7 @@ namespace QuizMaster.Infrastructure.Repositori
 
         public Task<string> AddTestCatalog(TestCatalog testCatalog)
         {
-            if(testCatalog == null)
+            if (testCatalog == null)
                 throw new ObjectEmptyException("Test catalog is null");
 
             var testCatalogs = GetAllTestsCatalog().Result;
@@ -57,7 +58,7 @@ namespace QuizMaster.Infrastructure.Repositori
 
             string serializedTestCatalog = JsonSerializer.Serialize(testCatalog);
 
-            if(testCatalogs.Count == 0)
+            if (testCatalogs.Count == 0)
             {
                 File.AppendAllText(testCatalogPath, serializedTestCatalog);
             }
@@ -74,7 +75,7 @@ namespace QuizMaster.Infrastructure.Repositori
 
         public Task<string> UpdateTestCatalog(TestCatalog testCatalog)
         {
-            if(testCatalog == null)
+            if (testCatalog == null)
                 throw new ObjectEmptyException("Test catalog is null");
 
             List<TestCatalog> testCatalogs = GetAllTestsCatalog().Result;
@@ -113,11 +114,11 @@ namespace QuizMaster.Infrastructure.Repositori
             if (testCatalog == null)
                 throw new ObjectEmptyException("Test catalog is null");
 
-           List<TestCatalog> testCatalogDeleted = GetAllTestsCatalog().Result;
+            List<TestCatalog> testCatalogDeleted = GetAllTestsCatalog().Result;
 
             int testCatalogDeletedId = testCatalogDeleted.FindIndex(x => x.Id == testCatalog.Id);
 
-            if (testCatalogDeletedId <=0)
+            if (testCatalogDeletedId <= 0)
                 throw new ObjectEmptyException("Test catalog not found");
 
             testCatalogDeleted[testCatalogDeletedId].IsDelete = true;
@@ -142,7 +143,7 @@ namespace QuizMaster.Infrastructure.Repositori
 
         public Task<List<QuestionTest>> GetAllQuestions()
         {
-           List<QuestionTest> questionTests = new List<QuestionTest>();
+            List<QuestionTest> questionTests = new List<QuestionTest>();
 
             string[] testCatalogs = File.ReadAllLines(questionTestPath);
 
@@ -184,9 +185,9 @@ namespace QuizMaster.Infrastructure.Repositori
 
             foreach (var item in answer)
             {
-                AnswerTest? answerTest  = JsonSerializer.Deserialize<AnswerTest>(item);
+                AnswerTest? answerTest = JsonSerializer.Deserialize<AnswerTest>(item);
 
-                if(answerTest != null || !answerTest.isDelete)
+                if (answerTest != null || !answerTest.isDelete)
                     answerTests.Add(answerTest);
             }
 
@@ -197,7 +198,7 @@ namespace QuizMaster.Infrastructure.Repositori
         {
             if (id <= 0) throw new ObjectEmptyException("The ID is zero or less.");
 
-            AnswerTest[] answer =  GetAllAnswer().Result.FindAll(x=>x.Id == id).ToArray();
+            AnswerTest[] answer = GetAllAnswer().Result.FindAll(x => x.Id == id).ToArray();
 
             return answer;
         }
@@ -206,7 +207,7 @@ namespace QuizMaster.Infrastructure.Repositori
         {
             string result;
 
-            if(answerTests.Length <= 0)
+            if (answerTests.Length <= 0)
                 throw new ObjectEmptyException("AnswerTests test is null");
 
             if (questionTest == null)
@@ -236,7 +237,7 @@ namespace QuizMaster.Infrastructure.Repositori
             else
                 File.AppendAllText(questionTestPath, Environment.NewLine + serializedQuestionTest);
 
-            
+
             foreach (var item in answerTests)
             {
                 item.Id = answerTestsId;
@@ -257,7 +258,7 @@ namespace QuizMaster.Infrastructure.Repositori
             int newCountAswer = GetAllAnswer().Result.Count;
 
 
-            result = newCountQuestion > oldCountQuestion && newCountAswer> oldCountAswer ? "Question test added successfully" : "Failed to add question test";
+            result = newCountQuestion > oldCountQuestion && newCountAswer > oldCountAswer ? "Question test added successfully" : "Failed to add question test";
 
             return Task.FromResult(result);
         }
@@ -272,7 +273,7 @@ namespace QuizMaster.Infrastructure.Repositori
             int questionTestsIndex = questionTests.FindIndex(x => x.Id == questionTest.Id);
 
 
-            if(questionTestsIndex < 0)
+            if (questionTestsIndex < 0)
                 throw new ObjectEmptyException("Question test not found");
 
             questionTests[questionTestsIndex] = questionTest;
@@ -295,21 +296,21 @@ namespace QuizMaster.Infrastructure.Repositori
 
         public async Task<string> DeleteQuestionTest(QuestionTest questionTest)
         {
-            if(questionTest == null)
+            if (questionTest == null)
                 throw new ObjectEmptyException("Question test is null");
 
             questionTest.IsDelete = true;
 
             List<QuestionTest> questionTests = await GetAllQuestions();
 
-            if(questionTests == null)
+            if (questionTests == null)
                 throw new ObjectEmptyException("No question tests found");
 
             int questionTestToDelete = questionTests.FindIndex(x => x.Id == questionTest.Id);
 
             if (questionTestToDelete < 0)
                 throw new ObjectEmptyException("Question test not found");
-            
+
             questionTests[questionTestToDelete].IsDelete = true;
 
             string result = "";
@@ -331,19 +332,15 @@ namespace QuizMaster.Infrastructure.Repositori
         //string testCatalog
         public async Task<List<QuestionTest>> GetQuiziQuestion(int id)
         {
-          
+
             if (id <= 0)
                 throw new ObjectEmptyException("testCatalog is null");
 
-            //int testCatalogId = testCatalog1.Id;
-
-            List<QuestionTest> question = GetAllQuestions().Result.FindAll(q=> q.TestCatalogId == id && !q.IsDelete);
+            List<QuestionTest> question = GetAllQuestions().Result.FindAll(q => q.TestCatalogId == id && !q.IsDelete);
 
             Random random = new Random();
 
-            //List<QuestionTest> questionTests = question.OrderBy(x => random.Next()).Take(5).ToList();
             List<QuestionTest> questionTests = question.OrderBy(x => random.Next()).ToList();
-
 
             return await Task.FromResult(questionTests);
         }
@@ -360,8 +357,7 @@ namespace QuizMaster.Infrastructure.Repositori
             List<AnswerTest> answerTests = GetAllAnswer()
                                             .Result
                                             .FindAll(x => x.QuestionTestId == id && !x.isDelete);
-                                            /*.OrderBy(x => random.Next())
-                                            .ToList();*/
+           
 
             List<AnswerTest> answerNew = answerTests.OrderBy(x => random.Next()).ToList();
 
@@ -374,13 +370,13 @@ namespace QuizMaster.Infrastructure.Repositori
         {
             List<StudentsTestResult> studentsTestResults = new List<StudentsTestResult>();
 
-            string[] lines = File.ReadAllLines(testResult);
+            string[] lines = File.ReadAllLines(testPath);
 
             foreach (string line in lines)
             {
                 StudentsTestResult? studentTestResult = JsonSerializer.Deserialize<StudentsTestResult>(line);
 
-                if(studentTestResult != null)
+                if (studentTestResult != null)
                     studentsTestResults.Add(studentTestResult);
 
             }
@@ -389,15 +385,15 @@ namespace QuizMaster.Infrastructure.Repositori
             return await Task.FromResult(studentsTestResults);
         }
 
-
+        int countScore = 0;
+        int CounterQuestion = 0;
+        double newScore = 0;
 
 
         public async Task AddQuestionAnswer(int studentId, int testCatalogId, int questionId, int[] answerId, int[] isCorrect)
         {
 
-            int countScore = 0;
-
-            if (studentId <= 0 || testCatalogId <=0 ||questionId <=0 || answerId.Length <=0 || isCorrect.Length <=0)
+            if (studentId <= 0 || testCatalogId <= 0 || questionId <= 0 || answerId.Length <= 0 || isCorrect.Length <= 0)
                 throw new ObjectEmptyException("One of the IDs is empty.");
 
             List<StudentsTestResult> studentResult = await GetStudentsTestResult();
@@ -409,75 +405,144 @@ namespace QuizMaster.Infrastructure.Repositori
             studentsTestResult.StudentId = studentId;
             studentsTestResult.QuestionTestId = questionId;
 
-            int count = answerId.Length > isCorrect.Length ? isCorrect.Length : answerId.Length;
+            int count = answerId.Count();/* >= isCorrect.Count() ?  answerId.Count() : isCorrect.Count();*/
+
+            //studentResult = await GetStudentsTestResult();
+
+           
 
             for (int i = 0; i < count; i++)
             {
                 studentResult = await GetStudentsTestResult();
 
                 studentsTestResult.Id = studentResult.Count > 0 ? studentResult.Max(x => x.Id) + 1 : 1;
-                
+
                 studentsTestResult.AnswerId = answerId[i];
-                studentsTestResult.IsCorrectId = isCorrect[i];
+
+                int k= i > isCorrect.Count() ? isCorrect[0] : i;
+
+                studentsTestResult.IsCorrectId = isCorrect[k];
 
 
                 string testResultJson = JsonSerializer.Serialize(studentsTestResult);
 
-                //string tt = testResultJson.Insert(testResultJson.Length - 2, ", \"CorectAnswerCount\":" + 3.ToString() + "");
-
                 if (studentResult.Count <= 0)
-                    File.AppendAllText(testResult, testResultJson);
+                    File.AppendAllText(testPath, testResultJson);
                 else
-                    File.AppendAllText(testResult, Environment.NewLine + testResultJson);
+                    File.AppendAllText(testPath, Environment.NewLine + testResultJson);
+
+                if (answerId[i] <= 0 || isCorrect[i] <= 0)
+                    continue;
+            }
+
+            if (CheckAnswer(answerId, isCorrect).Result)
+            {
+                countScore++;
+            }
 
 
-                
-                if (CheckAnswer(answerId, isCorrect).Result)
+            TestCatalog testCatalog = GetTestCatalogById(testCatalogId).Result;
+
+            newScore = testCatalog.MaximumScore / testCatalog.QuestionsNumber * countScore;
+
+            CounterQuestion++;
+
+            if (CounterQuestion == testCatalog.QuestionsNumber)
+            {
+                countScore = 0;
+                CounterQuestion = 0;
+
+                AddLiderboard(studentId, newScore);
+            }
+
+        }
+
+        public async Task<List<StudentProgress>> GetLiderBoard()
+        {
+            List<StudentProgress> studentsTestResults = new List<StudentProgress>();
+
+
+
+            string[] lines = File.ReadAllLines(studentProgressPasth);
+
+            foreach (string line in lines)
+            {
+                StudentProgress? studentTestResult = JsonSerializer.Deserialize<StudentProgress>(line);
+
+                if (studentTestResult != null)
+                    studentsTestResults.Add(studentTestResult);
+
+            }
+
+
+            return await Task.FromResult(studentsTestResults);
+        }
+
+
+        public async Task AddLiderboard(int studentId, double newScore)
+        {
+            int liderBoardIndex = 1;
+
+            List<StudentProgress> liderBoard = GetLiderBoard().Result;
+
+            StudentProgress studentProgress = new StudentProgress();
+
+
+            if (!liderBoard.Any(x => x.StudentId == studentId))
+            {
+                studentProgress.StudentId = studentId;
+                studentProgress.Score = newScore;
+
+                liderBoard.Add(studentProgress);
+            }
+            else
+            {
+                StudentProgress existingStudent = liderBoard.FirstOrDefault(x => x.StudentId == studentId);
+                if (existingStudent != null)
                 {
-                    countScore++;
+                    existingStudent.Score = existingStudent.Score + newScore;
                 }
             }
 
-            TestCatalog testCatalog =GetTestCatalogById(testCatalogId).Result;
-
-            var newScore = testCatalog.MaximumScore/testCatalog.QuestionsNumber * countScore;
 
 
-        }
+            studentProgress.Id = liderBoard.Count > 0 ? liderBoard.Max(x => x.Id) + 1 : 1;
 
-        public async Task<List<StudentsTestResult>> GetLiderBoard()
-        {
-            List<StudentsTestResult> studentsTestResults = GetStudentsTestResult().Result;
-            
-            List<Student> students = new List<Student>();
+            foreach (var item in liderBoard)
+            {
+            string progrssJson = JsonSerializer.Serialize(item);
+                if (liderBoard.Count <= 0)
+                    File.AppendAllText(studentProgressPasth, progrssJson);
+                else
+                    File.AppendAllText(studentProgressPasth, Environment.NewLine + progrssJson);
 
-            
-
-            //foreach (var item in studentsTestResults)
-            //{
-            //   var student = _
-            //}
-
-            return await Task.FromResult(new List<StudentsTestResult>());
-        }
+            }
 
 
-        public async Task AddLiderboard()
-        { 
-         throw new NotImplementedException();
+            //throw new NotImplementedException();
 
         }
 
 
         public async Task<bool> CheckAnswer(int[] answerId, int[] isCorrect)
         {
+            if (answerId.Length <= 0 || isCorrect.Length <= 0)
+                throw new ObjectEmptyException("AnswerId or IsCorrect is empty.");
 
-            foreach (var item in answerId)
+            if(answerId.Length != isCorrect.Length)
+                return await Task.FromResult(false);
+
+            int iscorectCount = 0;
+            //int index = answerId.Count() >= isCorrect.Count() ? isCorrect.Length : answerId.Length;
+
+            foreach (var item in isCorrect)
             {
-                if(isCorrect.Contains(item))
-                    return await Task.FromResult(true);
-
+                if (answerId.Contains(item))
+                    iscorectCount++;
             }
+
+            if (iscorectCount == isCorrect.Count())
+                return await Task.FromResult(true);
 
             return await Task.FromResult(false);
         }

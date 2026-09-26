@@ -7,7 +7,7 @@ namespace QuizMaster.Core.Model
     {
         public int Id { get; set; }
         public int StudentId { get; set; }
-        public Progres progres { get; set; }
-        public int Attempt { get; set; } //რამდენჯერ ცადა ტესტის დაწერა
+        public double Score { get; set; }
+        //public int Attempt { get; set; } //რამდენჯერ ცადა ტესტის დაწერა
     }
 }

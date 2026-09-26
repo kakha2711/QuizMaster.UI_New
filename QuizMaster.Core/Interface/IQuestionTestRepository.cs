@@ -27,9 +27,9 @@ namespace QuizMaster.Core.Interface
         Task<List<StudentsTestResult>> GetStudentsTestResult();
         Task AddQuestionAnswer(int studentId, int testCatalogId, int questionId, int[] answerId, int[] isCorrect);
 
-        Task<List<StudentsTestResult>> GetLiderBoard();
+        Task<List<StudentProgress>> GetLiderBoard();
 
-        Task AddLiderboard();
+        Task AddLiderboard(int studentId, double newScore);
 
     }
 }
