@@ -332,23 +332,6 @@ namespace QuizMaster.Infrastructure.Repositori
         }
 
 
-
-
-
-
-
-
-
-
-        //public async Task Duplicate(List<Person> sourse, Person item)
-        //{
-        //    if (sourse.Any(s => s.PersonalNumber == item.PersonalNumber))
-        //    {
-        //        throw new DuplicatePersonalNumberException($"A student with personal number {item.PersonalNumber} already exists.");
-        //    }
-        //}
-
-
         public async Task<int> Counter<T>(List<T> sourse) where T : Person
         {
             int Id = 0;

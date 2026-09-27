@@ -441,19 +441,45 @@ namespace QuizMaster.UI
 
             List<StudentProgress> liderBoards = await _questionTestRepositoryService.GetLiderBoard();
 
-            var studentOrderDescening = liderBoards.OrderByDescending(x => x.Score).ToList();
+            List<StudentProgress> studentProgresses = new List<StudentProgress>();
 
-            var studentOrder = liderBoards.OrderBy(x => x.Score).ToList();
+
+
+            List<StudentProgress> studentOrderDescening = liderBoards.OrderByDescending(x => x.Score).ToList();
+
+            List<StudentProgress> studentOrder = liderBoards.OrderBy(x => x.Score).ToList();
 
             var students = await _studentService.GetAllPerson("Student");
+
+            List<int> studId = new List<int>();
+
+            double maxScore = 0;
+
+            for (int i = 0; i < liderBoards.Count; i++)
+            {
+                var tt = liderBoards[i];
+
+                for (int j = i + 1; j < liderBoards.Count; j++)
+                {
+                    var rr = liderBoards[j];
+                    if (tt == rr && !studId.Contains(liderBoards[i].StudentId))
+                    {
+                        maxScore += tt.Score;
+                    }
+                }
+                        studId.Add(liderBoards[i].StudentId);
+            }
+
 
 
 
             foreach (var item in liderBoards)
             {
-                var student  = students.Where(x => x.Id == item.StudentId).FirstOrDefault();
+                
 
-                Console.WriteLine($"{item.StudentId}: {student.FirsName} {student.Lastname} {item.Score}");
+                //var student  = students.Where(x => x.Id == item.StudentId).FirstOrDefault();
+
+                //Console.WriteLine($"{item.StudentId}: {student.FirsName} {student.Lastname} {item.Score}");
             }
         }
     }
