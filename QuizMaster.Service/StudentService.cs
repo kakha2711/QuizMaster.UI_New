@@ -101,13 +101,13 @@ namespace QuizMaster.Service
 
         }
 
-        public async Task VerifiPersonEmail(string email, string verifiCode, string role)
+        public async Task VerifiPersonEmail(string email, string username, string verifiCode, string role)
         {
 
             try
             {
-                Person? person = role == "Lecturer" ? GetAllPerson(role).Result.FirstOrDefault(e => e.Email == email) as Lecturer
-                                               : GetAllPerson(role).Result.FirstOrDefault(e => e.Email == email) as Student;
+                Person? person = role == "Lecturer" ? GetAllPerson(role).Result.FirstOrDefault(e => e.Email == email && e.UserName == username) as Lecturer
+                                               : GetAllPerson(role).Result.FirstOrDefault(e => e.Email == email && e.UserName == username) as Student;
 
                 if (person.VerificationCode == verifiCode)
                     person.IsVerified = true;

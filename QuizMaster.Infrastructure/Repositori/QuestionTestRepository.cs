@@ -396,33 +396,47 @@ namespace QuizMaster.Infrastructure.Repositori
             if (studentId <= 0 || testCatalogId <= 0 || questionId <= 0 || answerId.Length <= 0 || isCorrect.Length <= 0)
                 throw new ObjectEmptyException("One of the IDs is empty.");
 
-            List<StudentsTestResult> studentResult = await GetStudentsTestResult();
+            
 
             StudentsTestResult studentsTestResult = new StudentsTestResult();
 
-            studentsTestResult.Id = studentResult.Count > 0 ? studentResult.Max(x => x.Id) + 1 : 1;
+            
             studentsTestResult.TestCatalogId = testCatalogId;
             studentsTestResult.StudentId = studentId;
             studentsTestResult.QuestionTestId = questionId;
 
             int count = answerId.Count();/* >= isCorrect.Count() ?  answerId.Count() : isCorrect.Count();*/
 
-            //studentResult = await GetStudentsTestResult();
 
            
 
             for (int i = 0; i < count; i++)
             {
-                studentResult = await GetStudentsTestResult();
+                List<StudentsTestResult> studentResult = await GetStudentsTestResult();
+                studentsTestResult.Id = studentResult.Count > 0 ? studentResult.Max(x => x.Id) + 1 : 1;
+
 
                 studentsTestResult.Id = studentResult.Count > 0 ? studentResult.Max(x => x.Id) + 1 : 1;
 
-                studentsTestResult.AnswerId = answerId[i];
+                int correct = 0;
+                int ansver = 0;
 
-                int k= i > isCorrect.Count() ? isCorrect[0] : i;
+                if (answerId.Count() != isCorrect.Count())
+                {
+                    correct = isCorrect[0];
+                    ansver = answerId[i];
+                }
+                else
+                {
+                    correct = isCorrect[i];
+                    ansver = answerId[i];
+                }
 
-                studentsTestResult.IsCorrectId = isCorrect[k];
 
+
+                    studentsTestResult.AnswerId = ansver;
+
+                studentsTestResult.IsCorrectId = correct;
 
                 string testResultJson = JsonSerializer.Serialize(studentsTestResult);
 
@@ -431,8 +445,6 @@ namespace QuizMaster.Infrastructure.Repositori
                 else
                     File.AppendAllText(testPath, Environment.NewLine + testResultJson);
 
-                if (answerId[i] <= 0 || isCorrect[i] <= 0)
-                    continue;
             }
 
             if (CheckAnswer(answerId, isCorrect).Result)
@@ -483,43 +495,56 @@ namespace QuizMaster.Infrastructure.Repositori
         {
             int liderBoardIndex = 1;
 
-            List<StudentProgress> liderBoard = GetLiderBoard().Result;
+            List<StudentProgress> liderBoardNew = new List<StudentProgress>();
+
+            List <StudentProgress> liderBoard = GetLiderBoard().Result;
 
             StudentProgress studentProgress = new StudentProgress();
 
 
-            if (!liderBoard.Any(x => x.StudentId == studentId))
-            {
-                studentProgress.StudentId = studentId;
-                studentProgress.Score = newScore;
-
-                liderBoard.Add(studentProgress);
-            }
-            else
+            if (liderBoard.Any(x => x.StudentId == studentId))
             {
                 StudentProgress existingStudent = liderBoard.FirstOrDefault(x => x.StudentId == studentId);
                 if (existingStudent != null)
                 {
                     existingStudent.Score = existingStudent.Score + newScore;
                 }
+
+                File.WriteAllText(studentProgressPasth, string.Empty);
+
+                foreach (var item in liderBoard)
+                {
+                    string progrssJson = JsonSerializer.Serialize(item);
+                    if (liderBoard.Count <= 0)
+                        File.AppendAllText(studentProgressPasth, progrssJson);
+                    else
+                        File.AppendAllText(studentProgressPasth, Environment.NewLine + progrssJson);
+
+                }
+
             }
-
-
-
-            studentProgress.Id = liderBoard.Count > 0 ? liderBoard.Max(x => x.Id) + 1 : 1;
-
-            foreach (var item in liderBoard)
+            else
             {
-            string progrssJson = JsonSerializer.Serialize(item);
-                if (liderBoard.Count <= 0)
-                    File.AppendAllText(studentProgressPasth, progrssJson);
-                else
-                    File.AppendAllText(studentProgressPasth, Environment.NewLine + progrssJson);
+                studentProgress.StudentId = studentId;
+                studentProgress.Score = newScore;
+                studentProgress.Id = liderBoard.Count > 0 ? liderBoard.Max(x => x.Id) + 1 : 1;
+
+                
+                    string progrssJson = JsonSerializer.Serialize(studentProgress);
+                    if (liderBoard.Count <= 0)
+                        File.AppendAllText(studentProgressPasth, progrssJson);
+                    else
+                        File.AppendAllText(studentProgressPasth, Environment.NewLine + progrssJson);
+
+                
 
             }
 
 
-            //throw new NotImplementedException();
+
+
+           
+
 
         }
 

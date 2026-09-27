@@ -125,7 +125,7 @@ namespace QuizMaster.UI
                     {
                         ColloringConsole.Error("Your account is unverified.");
 
-                        VerifiMail(personRole, _studentService);
+                        VerifiMail(personRole, userName, _studentService);
                         return;
                     }
 
@@ -142,7 +142,7 @@ namespace QuizMaster.UI
                     break;
             }
 
-            static async void VerifiMail(string personRole, StudentService _studentService)
+            static async void VerifiMail(string personRole, string username, StudentService _studentService)
             {
                 Console.WriteLine($"Enter {personRole} email");
                 string? studentEmail = Console.ReadLine();
@@ -150,35 +150,52 @@ namespace QuizMaster.UI
                 Console.WriteLine($"Enter {personRole} VerificationCode");
                 string? StudentVerificationCode = Console.ReadLine();
 
-                await _studentService.VerifiPersonEmail(studentEmail, StudentVerificationCode, personRole);
+                await _studentService.VerifiPersonEmail(studentEmail, username, StudentVerificationCode, personRole);
 
             }
         }
 
         static async Task LecturersEnvironment(string role, QuestionTestRepositoryService _questionTestRepositoryService, StudentService _studentService, Lecturer lecturer)
         {
-            Console.WriteLine("1. View all students");
-            Console.WriteLine("2. Create a new test");
-            Console.WriteLine("3. View all tests");
-            Console.WriteLine("4. Edit a test");
-            Console.WriteLine("5. Delete a test");
+            //Console.WriteLine("1. View all students");
+            //Console.WriteLine("2. Create a new test");
+            //Console.WriteLine("3. View all tests");
+            //Console.WriteLine("4. View Leaderboard");
+            ////Console.WriteLine("4. Edit a test");
+            //Console.WriteLine("5. Delete a test");
 
-            Console.WriteLine("6. Create a new question");
-            Console.WriteLine("7. View all questions");
-            Console.WriteLine("8. Edit a question");
-            Console.WriteLine("9. Delete a question");
+            //Console.WriteLine("6. Create a new question");
+            //Console.WriteLine("7. View all questions");
+            //Console.WriteLine("8. Edit a question");
+            //Console.WriteLine("9. Delete a question");
 
-            Console.WriteLine("10. Update lecturer");
-            Console.WriteLine("11. Delete lecturer");
+            //Console.WriteLine("10. Update lecturer");
+            //Console.WriteLine("11. Delete lecturer");
 
-            Console.WriteLine("Write the appropriate number.");
-            string? input = Console.ReadLine();
+            //Console.WriteLine("Write the appropriate number.");
+
+            //string? input = Console.ReadLine();
+
+            var input = AnsiConsole.Prompt(
+                             new SelectionPrompt<string>()
+                            .Title("Selected register or log in:")
+                            .AddChoices(
+                                        "View all students",
+                                        "Create a new test",
+                                        "View all tests",
+                                        "View Leaderboard",
+                                        "Create a new question",
+                                        "View all questions"
+                                        ));
+
+            AnsiConsole.MarkupLine($"You selected: [green]{input}[/]");
+
 
             TestCatalog questionTest = new TestCatalog();
 
             switch (input)
             {
-                case "1":
+                case "View all students":
                     var students = await _studentService.GetAllPerson("Student");
 
                     foreach (var item in students)
@@ -187,7 +204,7 @@ namespace QuizMaster.UI
                     }
 
                     break;
-                case "2":
+                case "Create a new test":
 
                     Console.WriteLine("Enter TestTitle");
                     string? testTitle = Console.ReadLine();
@@ -216,7 +233,7 @@ namespace QuizMaster.UI
                     await _questionTestRepositoryService.AddTestCatalog(questionTest);
 
                     break;
-                case "3":
+                case "View all tests":
 
                     List<TestCatalog> testCatalogs = await _questionTestRepositoryService.GetAllTestsCatalog();
 
@@ -226,12 +243,10 @@ namespace QuizMaster.UI
                     }
 
                     break;
-                case "4":
-
+                case "View Leaderboard":
+                    await GetLiderBord(_questionTestRepositoryService, _studentService);
                     break;
-                case "5":
-                    break;
-                case "6":
+                case "Create a new question":
 
                     QuestionTest question = new QuestionTest();
 
@@ -304,16 +319,7 @@ namespace QuizMaster.UI
                     }
 
                     break;
-                case "7":
-                    break;
-                case "8":
-                    break;
-                case "9":
-                    break;
-                case "10":
-                    break;
-                case "11":
-                    break;
+             
             }
 
         }
@@ -329,7 +335,7 @@ namespace QuizMaster.UI
             string? input = AnsiConsole.Prompt(
                                  new SelectionPrompt<string>()
                                 .Title("Enter IsCorrect:")
-                                .AddChoices("View all tests", "Start a test"));
+                                .AddChoices("View all tests", "Start a test", "View Leaderboard"));
 
             AnsiConsole.MarkupLine($"You selected: [green]{input}[/]");
 
@@ -399,7 +405,7 @@ namespace QuizMaster.UI
 
                         AnsiConsole.MarkupLine($"[blue]Installing {selected.Count} plugin(s)...[/]");
 
-                        
+
                         foreach (var item1 in answersForQuestion)
                         {
                             if (item1.IsCorrect)
@@ -424,6 +430,30 @@ namespace QuizMaster.UI
                     //ეს არის გასაგრძელებელი არ არის დამთავრებული
 
                     break;
+                case "View Leaderboard":
+                    await GetLiderBord(_questionTestRepositoryService, _studentService);
+                    break;
+            }
+        }
+
+        static async Task GetLiderBord( QuestionTestRepositoryService _questionTestRepositoryService, StudentService _studentService)
+        {
+
+            List<StudentProgress> liderBoards = await _questionTestRepositoryService.GetLiderBoard();
+
+            var studentOrderDescening = liderBoards.OrderByDescending(x => x.Score).ToList();
+
+            var studentOrder = liderBoards.OrderBy(x => x.Score).ToList();
+
+            var students = await _studentService.GetAllPerson("Student");
+
+
+
+            foreach (var item in liderBoards)
+            {
+                var student  = students.Where(x => x.Id == item.StudentId).FirstOrDefault();
+
+                Console.WriteLine($"{item.StudentId}: {student.FirsName} {student.Lastname} {item.Score}");
             }
         }
     }

@@ -1,0 +1,2 @@
+{"Id":1,"StudentId":1,"Score":60}
+{"Id":2,"StudentId":2,"Score":70}
