@@ -21,17 +21,34 @@ namespace QuizMaster.UI
 
         public async Task Show()
         {
-          
-            try
+            bool exit = true;
+
+            while (exit)
+            {
+                try
             {
                 string personRole = Role();
 
                 RegisterRole(personRole, _questionTestRepositoryService, _studentService);
-            }
+
+                    Console.WriteLine("Do you want to exit? (y/n)");
+                    string input = Console.ReadLine();
+                    if (input?.ToLower() == "y")
+                    {
+                        exit = false;
+                    }
+
+                    Console.Clear();
+                }
             catch (Exception ex)
             {
                 ColloringConsole.Error(ex.Message);
             }
+            }
+
+
+
+            
 
 
 
@@ -44,10 +61,14 @@ namespace QuizMaster.UI
         static string Role()
         {
 
+
+
+
             var personRole = AnsiConsole.Prompt(
                              new SelectionPrompt<string>()
                             .Title("Selected role:")
-                            .AddChoices("Lecturer", "Student"));
+                            .AddChoices("Lecturer", "Student")
+                            );
 
             AnsiConsole.MarkupLine($"You selected: [green]{personRole}[/]");
 
@@ -412,8 +433,6 @@ namespace QuizMaster.UI
                                 isCorectAnswer.Add(item1.Id);
                         }
 
-                        //if (selected.Count == 4)
-                        //{
                         foreach (var item1 in selected)
                         {
                             answerTestArray.Add(Convert.ToInt32(item1.Split(':')[0]));
@@ -442,59 +461,14 @@ namespace QuizMaster.UI
 
             List<Student> students = _studentService.GetAllPerson("Student").Result.OfType<Student>().ToList();
 
-            //foreach (Student student in students)
-            //{
-            //    var studentProgress = liderBoards.Where(x => x.StudentId == student.Id).FirstOrDefault();
-            //    if (studentProgress != null)
-            //    {
-            //        Console.WriteLine($"{student.Id}: {student.FirsName} {student.Lastname} {studentProgress.Score}");
-            //    }
-            //}
-
-
-
-
-            //var table1 = new Table()
-            //.RoundedBorder();
-
-            //table1.AddColumn("index");
-            //table1.AddColumn("Ful Name");
-            //table1.AddColumn("Greate");
-
-            //foreach (Student student in students)
-            //{
-            //    var studentProgress = liderBoards.Where(x => x.StudentId == student.Id).FirstOrDefault();
-            //    if (studentProgress != null)
-            //    {
-            //        table1.AddRow($"{student.Id}", $"{student.FirsName} {student.Lastname}", $"{studentProgress.Score}");
-            //    }
-            //}
-
-            //AnsiConsole.Write(table1);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+          
             var table = new Table()
-   /*.Centered()*/
-   .AddColumn(new TableColumn("Index").Centered())
-   .AddColumn(new TableColumn("Full Name").Centered())
-   .AddColumn(new TableColumn("Greate").Centered());
-   //.AddRow("Service A", "[green]Running[/]")
-   //.AddRow("Service B", "[red]Stopped[/]");
+            .AddColumn(new TableColumn("Index").Centered())
+            .AddColumn(new TableColumn("Full Name").Centered())
+            .AddColumn(new TableColumn("Greate").Centered());
 
 
-    foreach (Student student in students)
+            foreach (Student student in students)
             {
                 var studentProgress = liderBoards.Where(x => x.StudentId == student.Id).FirstOrDefault();
                 if (studentProgress != null)
