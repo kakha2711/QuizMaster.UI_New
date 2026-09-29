@@ -29,6 +29,8 @@ namespace QuizMaster.Core.Interface
 
         Task<List<StudentProgress>> GetLiderBoard();
 
+        public List<StudentProgress> GetLeaderBoardDescening();
+
         Task AddLiderboard(int studentId, double newScore);
 
     }

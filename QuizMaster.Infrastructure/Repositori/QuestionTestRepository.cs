@@ -23,6 +23,11 @@ namespace QuizMaster.Infrastructure.Repositori
 
             foreach (string line in lines)
             {
+                var tt = string.IsNullOrWhiteSpace(line);
+                if (string.IsNullOrWhiteSpace(line))
+                    continue;
+
+
                 TestCatalog? testCatalog = JsonSerializer.Deserialize<TestCatalog>(line);
 
                 if (testCatalog != null && !testCatalog.IsDelete)
@@ -221,7 +226,7 @@ namespace QuizMaster.Infrastructure.Repositori
 
             int oldCountAswer = answer.Count;
 
-            var tt = answer.Count > 0;
+            //var tt = answer.Count > 0;
 
             int questionTestsId = questionTests.Count > 0 ? questionTests.Max(x => x.Id) + 1 : 1;
 
@@ -479,6 +484,9 @@ namespace QuizMaster.Infrastructure.Repositori
 
             foreach (string line in lines)
             {
+                if (string.IsNullOrWhiteSpace(line))
+                    continue;
+
                 StudentProgress? studentTestResult = JsonSerializer.Deserialize<StudentProgress>(line);
 
                 if (studentTestResult != null)
@@ -501,52 +509,57 @@ namespace QuizMaster.Infrastructure.Repositori
 
             StudentProgress studentProgress = new StudentProgress();
 
+            studentProgress.StudentId = studentId;
+            studentProgress.Score = newScore;
+            studentProgress.Id = liderBoard.Count > 0 ? liderBoard.Max(x => x.Id) + 1 : 1;
 
-            if (liderBoard.Any(x => x.StudentId == studentId))
-            {
-                StudentProgress existingStudent = liderBoard.FirstOrDefault(x => x.StudentId == studentId);
-                if (existingStudent != null)
-                {
-                    existingStudent.Score = existingStudent.Score + newScore;
-                }
+            
+            string progrssJson = JsonSerializer.Serialize(studentProgress);
 
-                File.WriteAllText(studentProgressPasth, string.Empty);
-
-                foreach (var item in liderBoard)
-                {
-                    string progrssJson = JsonSerializer.Serialize(item);
-                    if (liderBoard.Count <= 0)
-                        File.AppendAllText(studentProgressPasth, progrssJson);
-                    else
-                        File.AppendAllText(studentProgressPasth, Environment.NewLine + progrssJson);
-
-                }
-
-            }
+            if (liderBoard.Count <= 0)
+                File.AppendAllText(studentProgressPasth, progrssJson);
             else
-            {
-                studentProgress.StudentId = studentId;
-                studentProgress.Score = newScore;
-                studentProgress.Id = liderBoard.Count > 0 ? liderBoard.Max(x => x.Id) + 1 : 1;
-
-                
-                    string progrssJson = JsonSerializer.Serialize(studentProgress);
-                    if (liderBoard.Count <= 0)
-                        File.AppendAllText(studentProgressPasth, progrssJson);
-                    else
-                        File.AppendAllText(studentProgressPasth, Environment.NewLine + progrssJson);
-
-                
-
-            }
-
-
-
-
-           
-
+                File.AppendAllText(studentProgressPasth, Environment.NewLine + progrssJson);
 
         }
+
+
+
+        public List<StudentProgress> GetLeaderBoardDescening()
+        {
+            string[] lines = File.ReadAllLines(studentProgressPasth);
+
+            List<StudentProgress> progressList = new List<StudentProgress>();
+
+            foreach (string line in lines)
+            {
+                if (!string.IsNullOrWhiteSpace(line))
+                {
+                    StudentProgress progress =
+                        JsonSerializer.Deserialize<StudentProgress>(line);
+
+                    if (progress != null)
+                    {
+                        progressList.Add(progress);
+                    }
+                }
+            }
+
+            var leaderBoard = progressList
+                .GroupBy(x => x.StudentId)
+                .Select(group => new StudentProgress
+                {
+                    StudentId = group.Key,
+                    Score = group.Sum(x => x.Score)
+                })
+                .OrderByDescending(x => x.Score)
+                .ToList();
+
+            return leaderBoard;
+        }
+
+
+
 
 
         public async Task<bool> CheckAnswer(int[] answerId, int[] isCorrect)

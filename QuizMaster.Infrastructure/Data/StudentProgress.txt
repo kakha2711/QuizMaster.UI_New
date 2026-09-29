@@ -1,2 +1,5 @@
-{"Id":1,"StudentId":1,"Score":60}
-{"Id":2,"StudentId":2,"Score":70}
+{"Id":1,"StudentId":1,"Score":70}
+{"Id":2,"StudentId":2,"Score":90}
+{"Id":3,"StudentId":3,"Score":88}
+{"Id":4,"StudentId":2,"Score":88}
+{"Id":5,"StudentId":1,"Score":112}

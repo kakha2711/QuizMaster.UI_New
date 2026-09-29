@@ -8,7 +8,7 @@
 {"Id":8,"Answer":"!=","IsCorrect":true,"isDelete":false,"QuestionTestId":2}
 {"Id":9,"Answer":"kitxulobs monacemebs","IsCorrect":false,"isDelete":false,"QuestionTestId":3}
 {"Id":10,"Answer":"bechdavs teqsts","IsCorrect":true,"isDelete":false,"QuestionTestId":3}
-{"Id":11,"Answer":"Slis ekrans","IsCorrect":false,"isDelete":false,"QuestionTestId":3}
+{"Id":11,"Answer":"shlis ekrans","IsCorrect":false,"isDelete":false,"QuestionTestId":3}
 {"Id":12,"Answer":"acherebs programas","IsCorrect":false,"isDelete":false,"QuestionTestId":3}
 {"Id":13,"Answer":"for","IsCorrect":true,"isDelete":false,"QuestionTestId":4}
 {"Id":14,"Answer":"while","IsCorrect":true,"isDelete":false,"QuestionTestId":4}
@@ -20,21 +20,81 @@
 {"Id":20,"Answer":"float","IsCorrect":false,"isDelete":false,"QuestionTestId":5}
 {"Id":21,"Answer":"1","IsCorrect":false,"isDelete":false,"QuestionTestId":6}
 {"Id":22,"Answer":"-1","IsCorrect":false,"isDelete":false,"QuestionTestId":6}
-{"Id":23,"Answer":"0","IsCorrect":true,"isDelete":false,"QuestionTestId":6}
-{"Id":24,"Answer":"2","IsCorrect":false,"isDelete":false,"QuestionTestId":6}
-{"Id":25,"Answer":"memkvidreobiTvis","IsCorrect":false,"isDelete":false,"QuestionTestId":7}
+{"Id":23,"Answer":"2","IsCorrect":false,"isDelete":false,"QuestionTestId":6}
+{"Id":24,"Answer":"0","IsCorrect":true,"isDelete":false,"QuestionTestId":6}
+{"Id":25,"Answer":"memkvidreobitobistvis","IsCorrect":false,"isDelete":false,"QuestionTestId":7}
 {"Id":26,"Answer":"pirobistvis","IsCorrect":true,"isDelete":false,"QuestionTestId":7}
 {"Id":27,"Answer":"masivistvis","IsCorrect":false,"isDelete":false,"QuestionTestId":7}
 {"Id":28,"Answer":"klasistvis","IsCorrect":false,"isDelete":false,"QuestionTestId":7}
 {"Id":29,"Answer":"int","IsCorrect":true,"isDelete":false,"QuestionTestId":8}
 {"Id":30,"Answer":"double","IsCorrect":true,"isDelete":false,"QuestionTestId":8}
-{"Id":31,"Answer":"decimal","IsCorrect":true,"isDelete":false,"QuestionTestId":8}
-{"Id":32,"Answer":"string","IsCorrect":false,"isDelete":false,"QuestionTestId":8}
+{"Id":31,"Answer":"string","IsCorrect":false,"isDelete":false,"QuestionTestId":8}
+{"Id":32,"Answer":"bool","IsCorrect":false,"isDelete":false,"QuestionTestId":8}
 {"Id":33,"Answer":"agrdzelebs cikls","IsCorrect":false,"isDelete":false,"QuestionTestId":9}
 {"Id":34,"Answer":"ckvets cikls","IsCorrect":true,"isDelete":false,"QuestionTestId":9}
 {"Id":35,"Answer":"qmnis cvlads","IsCorrect":false,"isDelete":false,"QuestionTestId":9}
 {"Id":36,"Answer":"bechdavs shedegs","IsCorrect":false,"isDelete":false,"QuestionTestId":9}
 {"Id":37,"Answer":"int","IsCorrect":true,"isDelete":false,"QuestionTestId":10}
 {"Id":38,"Answer":"string","IsCorrect":true,"isDelete":false,"QuestionTestId":10}
-{"Id":39,"Answer":"var","IsCorrect":true,"isDelete":false,"QuestionTestId":10}
-{"Id":40,"Answer":"clas","IsCorrect":false,"isDelete":false,"QuestionTestId":10}
+{"Id":39,"Answer":"class","IsCorrect":false,"isDelete":false,"QuestionTestId":10}
+{"Id":40,"Answer":"interface","IsCorrect":false,"isDelete":false,"QuestionTestId":10}
+{"Id":41,"Answer":"Object Oriented Programming","IsCorrect":true,"isDelete":false,"QuestionTestId":11}
+{"Id":42,"Answer":"Online Object Program","IsCorrect":false,"isDelete":false,"QuestionTestId":11}
+{"Id":43,"Answer":"Open Office Project","IsCorrect":false,"isDelete":false,"QuestionTestId":11}
+{"Id":44,"Answer":"Output Operation Process","IsCorrect":false,"isDelete":false,"QuestionTestId":11}
+{"Id":45,"Answer":"obieqtis shabloni","IsCorrect":true,"isDelete":false,"QuestionTestId":12}
+{"Id":46,"Answer":"cvladi","IsCorrect":false,"isDelete":false,"QuestionTestId":12}
+{"Id":47,"Answer":"metodi","IsCorrect":false,"isDelete":false,"QuestionTestId":12}
+{"Id":48,"Answer":"masivi","IsCorrect":false,"isDelete":false,"QuestionTestId":12}
+{"Id":49,"Answer":"Encapsulation","IsCorrect":true,"isDelete":false,"QuestionTestId":13}
+{"Id":50,"Answer":"Inheritance","IsCorrect":true,"isDelete":false,"QuestionTestId":13}
+{"Id":51,"Answer":"Polymorphism","IsCorrect":true,"isDelete":false,"QuestionTestId":13}
+{"Id":52,"Answer":"Compilation","IsCorrect":false,"isDelete":false,"QuestionTestId":13}
+{"Id":53,"Answer":"klasi","IsCorrect":false,"isDelete":false,"QuestionTestId":14}
+{"Id":54,"Answer":"klasis egzempliari","IsCorrect":true,"isDelete":false,"QuestionTestId":14}
+{"Id":55,"Answer":"interfeisi","IsCorrect":false,"isDelete":false,"QuestionTestId":14}
+{"Id":56,"Answer":"namespace","IsCorrect":false,"isDelete":false,"QuestionTestId":14}
+{"Id":57,"Answer":"programis bolos","IsCorrect":false,"isDelete":false,"QuestionTestId":15}
+{"Id":58,"Answer":"obieqtis sheqmnisas","IsCorrect":true,"isDelete":false,"QuestionTestId":15}
+{"Id":59,"Answer":"xelit koveltvis","IsCorrect":false,"isDelete":false,"QuestionTestId":15}
+{"Id":60,"Answer":"arasdros","IsCorrect":false,"isDelete":false,"QuestionTestId":15}
+{"Id":61,"Answer":"mshobel klass","IsCorrect":false,"isDelete":false,"QuestionTestId":16}
+{"Id":62,"Answer":"mimdinare obieqts","IsCorrect":true,"isDelete":false,"QuestionTestId":16}
+{"Id":63,"Answer":"interfeiss","IsCorrect":false,"isDelete":false,"QuestionTestId":16}
+{"Id":64,"Answer":"namespace","IsCorrect":false,"isDelete":false,"QuestionTestId":16}
+{"Id":65,"Answer":"kvelas","IsCorrect":false,"isDelete":false,"QuestionTestId":17}
+{"Id":66,"Answer":"mxolod imave klass","IsCorrect":true,"isDelete":false,"QuestionTestId":17}
+{"Id":67,"Answer":"shvil klass","IsCorrect":false,"isDelete":false,"QuestionTestId":17}
+{"Id":68,"Answer":"kvela proeqts","IsCorrect":false,"isDelete":false,"QuestionTestId":17}
+{"Id":69,"Answer":"public","IsCorrect":true,"isDelete":false,"QuestionTestId":18}
+{"Id":70,"Answer":"private","IsCorrect":true,"isDelete":false,"QuestionTestId":18}
+{"Id":71,"Answer":"class","IsCorrect":false,"isDelete":false,"QuestionTestId":18}
+{"Id":72,"Answer":"protected","IsCorrect":true,"isDelete":false,"QuestionTestId":18}
+{"Id":73,"Answer":"masivistvis","IsCorrect":false,"isDelete":false,"QuestionTestId":19}
+{"Id":74,"Answer":"metodis gadasacerad","IsCorrect":true,"isDelete":false,"QuestionTestId":19}
+{"Id":75,"Answer":"ciklistvis","IsCorrect":false,"isDelete":false,"QuestionTestId":19}
+{"Id":76,"Answer":"enum-istvis","IsCorrect":false,"isDelete":false,"QuestionTestId":19}
+{"Id":77,"Answer":"virtual metodtan","IsCorrect":true,"isDelete":false,"QuestionTestId":20}
+{"Id":78,"Answer":"string-tan","IsCorrect":false,"isDelete":false,"QuestionTestId":20}
+{"Id":79,"Answer":"int-tan","IsCorrect":false,"isDelete":false,"QuestionTestId":20}
+{"Id":80,"Answer":"foreach-tan","IsCorrect":false,"isDelete":false,"QuestionTestId":20}
+{"Id":81,"Answer":"class","IsCorrect":false,"isDelete":false,"QuestionTestId":21}
+{"Id":82,"Answer":"Interface","IsCorrect":true,"isDelete":false,"QuestionTestId":21}
+{"Id":83,"Answer":"Object","IsCorrect":false,"isDelete":false,"QuestionTestId":21}
+{"Id":84,"Answer":"Struct","IsCorrect":false,"isDelete":false,"QuestionTestId":21}
+{"Id":85,"Answer":"Abstract Method","IsCorrect":true,"isDelete":false,"QuestionTestId":22}
+{"Id":86,"Answer":"Normal Method","IsCorrect":true,"isDelete":false,"QuestionTestId":22}
+{"Id":87,"Answer":"Property","IsCorrect":true,"isDelete":false,"QuestionTestId":22}
+{"Id":88,"Answer":"Field","IsCorrect":true,"isDelete":false,"QuestionTestId":22}
+{"Id":89,"Answer":"get","IsCorrect":true,"isDelete":false,"QuestionTestId":23}
+{"Id":90,"Answer":"set","IsCorrect":true,"isDelete":false,"QuestionTestId":23}
+{"Id":91,"Answer":"try","IsCorrect":true,"isDelete":false,"QuestionTestId":23}
+{"Id":92,"Answer":"catch","IsCorrect":false,"isDelete":false,"QuestionTestId":23}
+{"Id":93,"Answer":"implements","IsCorrect":false,"isDelete":false,"QuestionTestId":24}
+{"Id":94,"Answer":":","IsCorrect":true,"isDelete":false,"QuestionTestId":24}
+{"Id":95,"Answer":"extends","IsCorrect":false,"isDelete":false,"QuestionTestId":24}
+{"Id":96,"Answer":"inherits","IsCorrect":false,"isDelete":false,"QuestionTestId":24}
+{"Id":97,"Answer":"erti saxeli sxvadasxva qceva","IsCorrect":true,"isDelete":false,"QuestionTestId":25}
+{"Id":98,"Answer":"bevri klasi","IsCorrect":false,"isDelete":false,"QuestionTestId":25}
+{"Id":99,"Answer":"bevri masivi","IsCorrect":false,"isDelete":false,"QuestionTestId":25}
+{"Id":100,"Answer":"bevri namespace","IsCorrect":false,"isDelete":false,"QuestionTestId":25}

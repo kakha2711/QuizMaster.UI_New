@@ -8,3 +8,18 @@
 {"Id":8,"QuestionText":"romeli tipebi aris ricxvistvis","IsDelete":false,"ChoiceQuestion":1,"TestCatalogId":1}
 {"Id":9,"QuestionText":"break ras aketebs","IsDelete":false,"ChoiceQuestion":0,"TestCatalogId":1}
 {"Id":10,"QuestionText":"romeli sakvandzo sitkvebi qmnis cvlads","IsDelete":false,"ChoiceQuestion":1,"TestCatalogId":1}
+{"Id":11,"QuestionText":"OOP ras nishnavs","IsDelete":false,"ChoiceQuestion":0,"TestCatalogId":2}
+{"Id":12,"QuestionText":"klasi aris","IsDelete":false,"ChoiceQuestion":0,"TestCatalogId":2}
+{"Id":13,"QuestionText":"romeli principebia OOP-is","IsDelete":false,"ChoiceQuestion":1,"TestCatalogId":2}
+{"Id":14,"QuestionText":"obieqti aris","IsDelete":false,"ChoiceQuestion":0,"TestCatalogId":2}
+{"Id":15,"QuestionText":"konstruqtori idzaxeba","IsDelete":false,"ChoiceQuestion":0,"TestCatalogId":2}
+{"Id":16,"QuestionText":"this agnishnavs","IsDelete":false,"ChoiceQuestion":0,"TestCatalogId":2}
+{"Id":17,"QuestionText":"private cevrze cvdoma aqvs","IsDelete":false,"ChoiceQuestion":0,"TestCatalogId":2}
+{"Id":18,"QuestionText":"romeli Access Modifier-ebia","IsDelete":false,"ChoiceQuestion":1,"TestCatalogId":2}
+{"Id":19,"QuestionText":"virtual gamoikeneba","IsDelete":false,"ChoiceQuestion":0,"TestCatalogId":2}
+{"Id":20,"QuestionText":"override gamoikeneba","IsDelete":false,"ChoiceQuestion":0,"TestCatalogId":2}
+{"Id":21,"QuestionText":"interfeisi iqmneba sitkvit","IsDelete":false,"ChoiceQuestion":0,"TestCatalogId":2}
+{"Id":22,"QuestionText":"Abstract Class sheidzleba sheicavdes","IsDelete":false,"ChoiceQuestion":1,"TestCatalogId":2}
+{"Id":23,"QuestionText":"Property shedgeba","IsDelete":false,"ChoiceQuestion":1,"TestCatalogId":2}
+{"Id":24,"QuestionText":"memkvidreobistvis gamoikeneba","IsDelete":false,"ChoiceQuestion":0,"TestCatalogId":2}
+{"Id":25,"QuestionText":"Polymorphism nishnavs","IsDelete":false,"ChoiceQuestion":0,"TestCatalogId":2}

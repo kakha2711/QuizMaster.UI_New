@@ -110,5 +110,13 @@ namespace QuizMaster.Service
 
             return await _questionTestRepository.GetLiderBoard();
         }
+
+
+
+
+        public List<StudentProgress> GetLeaderBoardDescening()
+        {
+            return _questionTestRepository.GetLeaderBoardDescening();
+        }   
     }
 }

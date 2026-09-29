@@ -180,12 +180,12 @@ namespace QuizMaster.UI
                              new SelectionPrompt<string>()
                             .Title("Selected register or log in:")
                             .AddChoices(
-                                        "View all students",
-                                        "Create a new test",
-                                        "View all tests",
-                                        "View Leaderboard",
-                                        "Create a new question",
-                                        "View all questions"
+                                        "View all students"
+                                        , "Create a new test"
+                                        , "View all tests"
+                                        , "View Leaderboard"
+                                        , "Create a new question"
+                                        /*,"View all questions"*/
                                         ));
 
             AnsiConsole.MarkupLine($"You selected: [green]{input}[/]");
@@ -256,8 +256,9 @@ namespace QuizMaster.UI
 
                     int num = 0;
                     int testQuestioncount = 0;
+                    //testQuestioncount = Convert.ToInt32(selectedQuestion.QuestionsNumber);
 
-                    while (num <= testQuestioncount - 1)
+                    do
                     {
 
                         Console.Write($"Enter {num + 1} Question: ");
@@ -316,10 +317,10 @@ namespace QuizMaster.UI
                         _questionTestRepositoryService.AddQuestionTest(question, answerTests.ToArray());
                         num++;
 
-                    }
+                    } while (num <= testQuestioncount - 1);
 
                     break;
-             
+
             }
 
         }
@@ -436,51 +437,23 @@ namespace QuizMaster.UI
             }
         }
 
-        static async Task GetLiderBord( QuestionTestRepositoryService _questionTestRepositoryService, StudentService _studentService)
+        static async Task GetLiderBord(QuestionTestRepositoryService _questionTestRepositoryService, StudentService _studentService)
         {
 
-            List<StudentProgress> liderBoards = await _questionTestRepositoryService.GetLiderBoard();
+            List<StudentProgress> liderBoards = _questionTestRepositoryService.GetLeaderBoardDescening();
 
-            List<StudentProgress> studentProgresses = new List<StudentProgress>();
+            List<Student> students = _studentService.GetAllPerson("Student").Result.OfType<Student>().ToList();
 
-
-
-            List<StudentProgress> studentOrderDescening = liderBoards.OrderByDescending(x => x.Score).ToList();
-
-            List<StudentProgress> studentOrder = liderBoards.OrderBy(x => x.Score).ToList();
-
-            var students = await _studentService.GetAllPerson("Student");
-
-            List<int> studId = new List<int>();
-
-            double maxScore = 0;
-
-            for (int i = 0; i < liderBoards.Count; i++)
+            foreach (Student student in students)
             {
-                var tt = liderBoards[i];
-
-                for (int j = i + 1; j < liderBoards.Count; j++)
+                var studentProgress = liderBoards.Where(x => x.StudentId == student.Id).FirstOrDefault();
+                if (studentProgress != null)
                 {
-                    var rr = liderBoards[j];
-                    if (tt == rr && !studId.Contains(liderBoards[i].StudentId))
-                    {
-                        maxScore += tt.Score;
-                    }
+                    Console.WriteLine($"{student.Id}: {student.FirsName} {student.Lastname} {studentProgress.Score}");
                 }
-                        studId.Add(liderBoards[i].StudentId);
             }
 
 
-
-
-            foreach (var item in liderBoards)
-            {
-                
-
-                //var student  = students.Where(x => x.Id == item.StudentId).FirstOrDefault();
-
-                //Console.WriteLine($"{item.StudentId}: {student.FirsName} {student.Lastname} {item.Score}");
-            }
         }
     }
 }
