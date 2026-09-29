@@ -9,6 +9,7 @@ namespace QuizMaster.UI
 {
     internal class Menu
     {
+
         private readonly StudentService _studentService;
         private readonly QuestionTestRepositoryService _questionTestRepositoryService;
 
@@ -20,10 +21,9 @@ namespace QuizMaster.UI
 
         public async Task Show()
         {
+          
             try
             {
-
-                //await _questionTestRepositoryService.GetLiderBoard();
                 string personRole = Role();
 
                 RegisterRole(personRole, _questionTestRepositoryService, _studentService);
@@ -256,7 +256,6 @@ namespace QuizMaster.UI
 
                     int num = 0;
                     int testQuestioncount = 0;
-                    //testQuestioncount = Convert.ToInt32(selectedQuestion.QuestionsNumber);
 
                     do
                     {
@@ -428,7 +427,6 @@ namespace QuizMaster.UI
 
                     }
 
-                    //ეს არის გასაგრძელებელი არ არის დამთავრებული
 
                     break;
                 case "View Leaderboard":
@@ -444,16 +442,74 @@ namespace QuizMaster.UI
 
             List<Student> students = _studentService.GetAllPerson("Student").Result.OfType<Student>().ToList();
 
-            foreach (Student student in students)
+            //foreach (Student student in students)
+            //{
+            //    var studentProgress = liderBoards.Where(x => x.StudentId == student.Id).FirstOrDefault();
+            //    if (studentProgress != null)
+            //    {
+            //        Console.WriteLine($"{student.Id}: {student.FirsName} {student.Lastname} {studentProgress.Score}");
+            //    }
+            //}
+
+
+
+
+            //var table1 = new Table()
+            //.RoundedBorder();
+
+            //table1.AddColumn("index");
+            //table1.AddColumn("Ful Name");
+            //table1.AddColumn("Greate");
+
+            //foreach (Student student in students)
+            //{
+            //    var studentProgress = liderBoards.Where(x => x.StudentId == student.Id).FirstOrDefault();
+            //    if (studentProgress != null)
+            //    {
+            //        table1.AddRow($"{student.Id}", $"{student.FirsName} {student.Lastname}", $"{studentProgress.Score}");
+            //    }
+            //}
+
+            //AnsiConsole.Write(table1);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            var table = new Table()
+   /*.Centered()*/
+   .AddColumn(new TableColumn("Index").Centered())
+   .AddColumn(new TableColumn("Full Name").Centered())
+   .AddColumn(new TableColumn("Greate").Centered());
+   //.AddRow("Service A", "[green]Running[/]")
+   //.AddRow("Service B", "[red]Stopped[/]");
+
+
+    foreach (Student student in students)
             {
                 var studentProgress = liderBoards.Where(x => x.StudentId == student.Id).FirstOrDefault();
                 if (studentProgress != null)
                 {
-                    Console.WriteLine($"{student.Id}: {student.FirsName} {student.Lastname} {studentProgress.Score}");
+                    table.AddRow($"{student.Id}", $"{student.FirsName} {student.Lastname}", $"{studentProgress.Score}");
                 }
             }
 
+            var aligned = new Align(
+                table,
+                HorizontalAlignment.Center,
+                VerticalAlignment.Middle
+            );
 
+            AnsiConsole.Write(aligned);
         }
     }
 }
